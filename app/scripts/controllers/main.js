@@ -22,19 +22,20 @@ angular.module('iwenApp')
     });
 
     $scope.colors = [
-      'dd1e31',
-      'f18ecc',
-      'f18e00',
-      '178c17',
-      '666666',
-      '999999',
-      'ffffff',
-      'f1f1f1',
-      '000000'
+      '2C3053',
+      '4D8BA4',
+      '7DBBA6',
+      'F8D4D6',
+      'F57CB2',
+      'FFA0C0',
+      'F7BE82',
+      'FFF865',
+      'A4DBFF'
     ];
 
     function updateColorInfo() {
       var len = $scope.colors.length;
+      console.log($scope.colors);
       while (len--) {
         //Clean up input
         $scope.colors[len] = $scope.colors[len].replace(/[\s#]/g, '');
@@ -50,7 +51,7 @@ angular.module('iwenApp')
           }
           $scope.styles[len] = {
             'background-color': '#'+$scope.colors[len],
-            'width': (100 / $scope.colors.length)+'%'
+            //'width': (100 / $scope.colors.length)+'%'
           }
           $scope.nestedStyles[len] = {
             'color': '#'+$scope.colors[len]
@@ -94,7 +95,7 @@ angular.module('iwenApp')
     };
 
     $scope.addColor = function() {
-      $scope.colors.push('ffffff');
+      $scope.colors.unshift('ffffff'); // push new color to the beginning of the array
     };
 
     $scope.deleteColor = function(key) {

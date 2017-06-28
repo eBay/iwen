@@ -5,10 +5,14 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
 <div id="main" ng-controller="MainCtrl">
   <h1>iwen<div>Color Palette Tool</div></h1>
   <section class="palette">
-    <div class="palette__color" ng-repeat="(i, item) in colors track by i">
+    <div class="palette__actions">
+      <button class="add__color" ng-click="addColor()" title="Add color"><i class="fa fa-plus"></i>Add color</button>
+    </div>
+
+   <!--  <div class="palette__color" ng-repeat="(i, item) in colors track by i">
       <div class="color__input">
         <div class="color__picker" ng-style=bgStyles[i]></div>
-        <input class="palette__values"  ng-model="colors[i]" maxlength="6" />
+        <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[i]" />
       </div>
       <ul class="color__properties">
         <li>Luminance: <span ng-bind="colorInfo[i].L.toFixed(3)"></span>
@@ -17,17 +21,17 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
         </li>
         <li>rgb(<span ng-bind="colorInfo[i].r"></span>, <span ng-bind="colorInfo[i].g"></span>, <span ng-bind="colorInfo[i].b"></span>)</li>
       </ul>
-    </div>
-    <div class="palette__actions">
-      <button class="" ng-click="addColor()" title="Add color"><i class="fa fa-plus-square"></i>Add color</button>
-    </div>
+    </div> -->
   </section>
 
   <h2>Pairings & Accessibility</h2>
-  <div class="palette__pairings">
+  <div class="palette__pairings" ui-sortable>
     <div id="color__{{color}}{{$index}}" class="color" ng-repeat="color in colors track by $index" ng-style=styles[$index] ng-init="$last ? updateUI() : angular.noop()">
       <button class="btn btn-delete" ng-click="deleteColor($index)" aria-label="Delete"><i class="fa fa-trash" aria-hidden="true" title="Delete color from palette"></i></button>
-      <h3 class="color__title"  ng-init="parent = $index" >#<span ng-bind="color"></span></h3>
+      <h3 class="color__title"  ng-init="parent = $index" >
+        <!-- <span ng-bind="color"></span> -->
+        <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[$index]" />
+      </h3>
 
         <div class="color__nested" ng-repeat="nested in colors track by $index" ng-if="nested !== color">
           <span class="color__pairing" ng-style=nestedStyles[$index] ng-bind="nested"></span>

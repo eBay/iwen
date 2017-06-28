@@ -57,10 +57,20 @@ h1 {
     color: #666;
     border: none;
     background-color: transparent;
+    cursor: pointer;
     &:hover {
       color: #232323;
     }
   }
+}
+.palette .add__color {
+  cursor: pointer;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  color: #0654ba;
+  font-size: 18px;
+  height: 56px;
+  padding: 0 112px;
 }
 .palette__color {
   align-items: center;
@@ -90,7 +100,6 @@ h1 {
   text-align: center;
   width: 65%;
   margin: 0 floor($gutter) 0 0;
-
 }
 .color__properties {
   font-size: 14px;
@@ -102,10 +111,18 @@ h1 {
   }
 }
 .palette__pairings {
-  display: flex;
+  /*display: flex;*/
   width: 100%;
   font-family: monospace;
   font-size: 24px;
+  .palette__values {
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkNhcGFfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MjguOSA1MjguOSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTI4LjkgNTI4Ljk7IiB4bWw6c3BhY2U9InByZXNlcnZlIj48c3R5bGUgdHlwZT0idGV4dC9jc3MiPi5zdDB7ZmlsbDojOUI5QjlCO308L3N0eWxlPjxnPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zMjguOSw4OS4xbDEwNy42LDEwNy42TDE2NC4xLDQ2OS4xTDU2LjYsMzYxLjVMMzI4LjksODkuMXogTTUxOC4xLDYzLjJsLTQ4LTQ4Yy0xOC41LTE4LjUtNDguNy0xOC41LTY3LjMsMGwtNDYsNDZsMTA3LjYsMTA3LjZsNTMuNi01My42QzUzMi41LDEwMC44LDUzMi41LDc3LjYsNTE4LjEsNjMuMnogTTAuMyw1MTIuN2MtMiw4LjgsNiwxNi43LDE0LjgsMTQuNkwxMzUsNDk4LjJMMjcuNSwzOTAuNkwwLjMsNTEyLjd6Ii8+PC9nPjwvc3ZnPg==);
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
 }
 .color {
   position: relative;
@@ -113,6 +130,11 @@ h1 {
   padding: floor($gutter * $ratio);
   background-color: #ccc;
   transition: width 0.8s, background-color 0.8s;
+  min-width: 70px;
+  width: auto;
+  float: left;
+  margin: 5px;
+  border-radius: 3px;
   &:hover {
     .btn-delete {
       display: block;
@@ -132,6 +154,7 @@ h1 {
 }
 
 .color__title {
+  text-align: center;
   letter-spacing: 2px;
   margin: 0 0 8px;
   line-height: 1;
@@ -201,4 +224,7 @@ h1 {
   .text__small {
     font-size: 18px;
   }
+}
+.colorpicker .dropdown-menu {
+  background: white;
 }
