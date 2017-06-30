@@ -32,6 +32,8 @@ module.exports = function(config) {
       'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/tinycolor/tinycolor.js',
+      'bower_components/angular-color-picker/dist/angularjs-color-picker.js',
       // endbower
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
