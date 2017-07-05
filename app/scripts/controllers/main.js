@@ -20,21 +20,26 @@ angular.module('iwenApp')
       updateColorInfo();
       $scope.updateUI();
     });
-
+    $scope.isOpen = true;
     $scope.colors = [
-      'dd1e31',
-      'f18ecc',
-      'f18e00',
-      '178c17',
-      '666666',
-      '999999',
-      'ffffff',
-      'f1f1f1',
-      '000000'
+      '2C3053',
+      '4D8BA4',
+      '7DBBA6',
+      'F8D4D6',
+      'F57CB2',
+      'FFA0C0',
+      'F7BE82',
+      'FFF865',
+      'A4DBFF'
     ];
+
+    $scope.sortableOptions = {
+      handle: '.myHandle'
+    };
 
     function updateColorInfo() {
       var len = $scope.colors.length;
+      console.log($scope.colors);
       while (len--) {
         //Clean up input
         $scope.colors[len] = $scope.colors[len].replace(/[\s#]/g, '');
@@ -50,7 +55,7 @@ angular.module('iwenApp')
           }
           $scope.styles[len] = {
             'background-color': '#'+$scope.colors[len],
-            'width': (100 / $scope.colors.length)+'%'
+            //'width': (100 / $scope.colors.length)+'%'
           }
           $scope.nestedStyles[len] = {
             'color': '#'+$scope.colors[len]
@@ -94,7 +99,7 @@ angular.module('iwenApp')
     };
 
     $scope.addColor = function() {
-      $scope.colors.push('ffffff');
+      $scope.colors.unshift($scope.newColor); // push new color to the beginning of the array
     };
 
     $scope.deleteColor = function(key) {
@@ -135,14 +140,14 @@ angular.module('iwenApp')
           var colorPairing;
 
           contrast.each(function() {
-            colorPairing = $(this).parent().prev('.color__pairing').html();
-            $(this).nextAll().find('.fa-font').each(function() {
+            colorPairing = $(this).parents().prev('.color__pairing').html();
+            $(this).nextAll().find('.fa').each(function() {
               $(this).removeClass('pass').removeClass('fail');
             });
             if ($scope.colors[i].length === 6 && colorPairing.length === 6) {
               contrastValue = $(this).html();
               if (contrastValue < 3) {
-                $(this).nextAll().find('.fa-font').each(function() {
+                $(this).nextAll().find('.fa').each(function() {
                   $(this).addClass('fail');
                 })
               } else if ( contrastValue < 4.5) {
@@ -154,7 +159,7 @@ angular.module('iwenApp')
                 })
               } else if ( contrastValue >= 4.5) {
                 //console.log('both pass');
-                $(this).nextAll().find('.fa-font').each(function() {
+                $(this).nextAll().find('.fa').each(function() {
                   $(this).addClass('pass');
                 })
               }
