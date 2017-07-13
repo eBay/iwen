@@ -43,6 +43,11 @@ h1 {
 .colorpicker {
   position: relative;
 }
+
+.colorpicker.dropdown {
+  display: block!important;  
+}
+
 .palette {
   display: flex;
   //justify-content: space-around;
