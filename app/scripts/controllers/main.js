@@ -21,17 +21,13 @@ angular.module('iwenApp')
       $scope.updateUI();
     });
     $scope.isOpen = true;
-    $scope.colors = [
-      '2C3053',
-      '4D8BA4',
-      '7DBBA6',
-      'F8D4D6',
-      'F57CB2',
-      'FFA0C0',
-      'F7BE82',
-      'FFF865',
-      'A4DBFF'
+    $scope.colors = [      
+      
     ];
+
+    if(!$scope.colors.length){
+      $('body').addClass('no-colors');
+    }
 
     $scope.sortableOptions = {
       handle: '.myHandle'
