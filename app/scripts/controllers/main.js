@@ -16,6 +16,10 @@ angular.module('iwenApp')
     $scope.nestedStyles = [];
     $scope.colorInfo = [];
 
+
+    $scope.$watchCollection('newColor', function(nv) {
+      console.log(nv)
+    });
     $scope.$watchCollection('colors', function(newValues, oldValues) {
       updateColorInfo();
       $scope.updateUI();
@@ -96,6 +100,8 @@ angular.module('iwenApp')
 
     $scope.addColor = function() {
       $scope.colors.unshift($scope.newColor); // push new color to the beginning of the array
+      $('.add__color__input').val('#ffffff');
+      $('.palette__actions i').attr('style','color:#000000');
     };
 
     $scope.deleteColor = function(key) {
