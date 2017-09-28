@@ -30,16 +30,9 @@ angular.module('iwenApp')
     }
     else{
 
-
-     //
-  
-
       var colors_str = $cookies.get('colors'); 
       $scope.colors = JSON.parse($cookies.get('colors'));
 
-
-      console.log('scopre', $scope.colors) 
-      console.log('sdsdsds',$cookies.get('colors'))
     }
 
 
@@ -49,7 +42,7 @@ angular.module('iwenApp')
 
     function updateColorInfo() {
       var len = $scope.colors.length;
-      console.log($scope.colors);
+    
       while (len--) {
         //Clean up input
         $scope.colors[len] = $scope.colors[len].replace(/[\s#]/g, '');
@@ -154,7 +147,7 @@ angular.module('iwenApp')
       // This will only run after the ng-repeat has rendered its things to the DOM
       $timeout(function(){
         var now = new Date();
-        console.log('UI Updated', $scope.colors.length+' colors rendered', now.getTime());
+      
 
         var i = $scope.colors.length;
 
@@ -163,12 +156,13 @@ angular.module('iwenApp')
 
           var element = angular.element('#color__'+$scope.colors[i]+i);
           var contrast = element.find(' .contrast');
-          console.log('length', $scope.colors[i].length);
+        
 
           var contrastValue;
           var colorPairing;
 
           contrast.each(function() {
+            //console.log('yes')          
             colorPairing = $(this).parents().prev('.color__pairing').html();
             $(this).nextAll().find('.fa').each(function() {
               $(this).removeClass('pass').removeClass('fail');
@@ -187,7 +181,7 @@ angular.module('iwenApp')
                   $(this).addClass('pass');
                 })
               } else if ( contrastValue >= 4.5) {
-                //console.log('both pass');
+                
                 $(this).nextAll().find('.fa').each(function() {
                   $(this).addClass('pass');
                 })
@@ -195,10 +189,36 @@ angular.module('iwenApp')
             } else {
               $(this).html('');
             }
-            console.log($scope.colors[i], colorPairing, contrastValue);
+          
           });
 
         }
+
+
+        angular.element(".card").each(function(){
+          var totalTest = 0;
+          var totalPass = 0;
+         $(this).find('.pass-fail').each(function(){
+             totalTest++;
+            if($(this).hasClass('pass')){
+              totalPass++
+            }
+         })
+          var finalNum = totalTest - totalPass;
+          var jobType;
+           if(totalPass > (totalTest / 1.75)){
+              jobType = 'happy';
+           }
+           else if(totalPass >= (totalTest / 3)){
+             jobType = 'neutral';
+           }
+           if(totalPass <= (totalTest / 3)){
+             jobType = 'bad';
+           }
+
+           $(this).find('.smiley').attr('id',jobType)
+       
+        });
       }, 0);
 
     };
