@@ -338,14 +338,41 @@ h2{
 
 .legend {
   font-size: 14px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   background: white;
   border: 1px solid #ccc;
   display: inline-block;
-    display: none;
-
+  display: none;
   float: right;
   margin-right:15px;
+  position: fixed;
+  bottom:0px;
+  right:80px;
+  &.active{
+    display: inline-block;
+  }
+  &:after,
+&:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 100%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+&:after {
+    top: 35px;
+    border-color: transparent transparent transparent #fff;
+    border-width: 10px;
+}
+
+&:before {
+    top: 34px;
+    border-color: transparent transparent transparent #aaa;
+    border-width: 11px;
+}
   .legend-item {
     float: left;
     padding: 20px;
@@ -441,6 +468,13 @@ span.btn {
 
 .clear {
   clear: both;
+}
+
+
+.info{
+  position: fixed;
+  bottom:35px;
+  right:20px;
 }
 
 
