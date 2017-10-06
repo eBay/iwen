@@ -2,26 +2,146 @@
 https://en.wikipedia.org/wiki/X11_color_names
 http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
 -->
-<div id="main" class="col-md-12 no-padding no-margin" ng-controller="MainCtrl">
- <!--  <div ng-hide="colors.length" class="no-colors">
-      dsdfsdfdsf
-  </div> -->
-  <div class="col-md-12 no-padding no-margin">
+<div id="main" class="col-md-12 no-padding no-margin">
+ <div class="col-md-9 no-padding no-margin">
   <header>
-    
-  <h2 style="float: left; padding: 0 20px;">Pairings & Accessibility <span ng-show="colors.length == 1"> - {{colors.length}} color </span><span ng-show="colors.length > 1"> - {{colors.length}} colors </span></h2>
-  
-
+   <h1>iwen<div>Color Palette Tool</div></h1>
+   <h2 style="float: left; padding: 0 20px;">Pairings & Accessibility <span ng-show="colors.length == 1"> - {{colors.length}} color </span><span ng-show="colors.length > 1"> - {{colors.length}} colors </span></h2>
   </header>
+  <div class="clear"></div>
+  <div class="palette__pairings" ui-sortable="sortableOptions">
+    
+   <!-- ui-sortable -->
+  <div class="card" style="background: #{{color.bg.hex}}" ng-repeat="color in colors track by $index" ng-click="util.cardClicked = color.id;util.activateSidebarInfo = $index + 1">
+      <div class="card-body" ng-init="parent = $index">
+        <svg " ng-click="util.deleteColor(color.id)" class="delete-btn" width="30" height="30" fill="#4b4b4b" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M24.8 75.2c.2.2.5.3.7.3s.5-.1.7-.3L50 51.4l23.8 23.8c.2.2.5.3.7.3s.5-.1.7-.3c.4-.4.4-1 0-1.4L51.4 50l23.8-23.8c.4-.4.4-1 0-1.4s-1-.4-1.4 0L50 48.6 26.2 24.8c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4L48.6 50 24.8 73.8c-.4.4-.4 1 0 1.4z"/></svg>
+        <div class="content">
+          <h3 style="color: #{{color.header.hex}}; font-family: {{color.header.font}}">Lorem ipsum dolor sit amet.</h3>
+          <h4 style="color: #{{color.subHeader.hex}}; font-family: {{color.subHeader.font}}">Morbi lobortis sollicitudin dui eget molestie.</h4>
+          <p style="color: #{{color.paragraph.hex}}; font-family: {{color.paragraph.font}}">Nulla eget viverra velit, at pharetra sem. Suspendisse in magna ut orci molestie convallis ornare eu mi. Suspendisse feugiat nunc metus, vel ultricies tortor tempor a.</p>
+        </div>       
+        <span class="myHandle"></span>
+        <div class="job-type"></div>
+        <div class="smiley">
+          <div class="steam-container">
+            <div class="squiggle-container squiggle-container-1">
+              <div class="squiggle">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                   viewBox="0 0 28.1 80.6" style="enable-background:new 0 0 28.1 80.6;" xml:space="preserve">
+                <path class="" fill="none" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M22.6,75.1c-8-5.6-15.2-10.5-15.2-19.9c0-12.1,14.1-17.2,14.1-29.6c0-9.1-6.7-15.7-16-20.1"/>
+                </svg>
+              </div> <!-- end .squiggle-->
+            </div>
+            <div class="squiggle-container squiggle-container-2">
+              <div class="squiggle">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                   viewBox="0 0 28.1 80.6" style="enable-background:new 0 0 28.1 80.6;" xml:space="preserve">
+                <path class="" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M22.6,75.1c-8-5.6-15.2-10.5-15.2-19.9c0-12.1,14.1-17.2,14.1-29.6c0-9.1-6.7-15.7-16-20.1"/>
+                </svg>
+              </div> <!-- end .squiggle-->
+            </div>
+            <div class="squiggle-container squiggle-container-3">
+              <div class="squiggle">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                   viewBox="0 0 28.1 80.6" style="enable-background:new 0 0 28.1 80.6;" xml:space="preserve">
+                <path class="" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M22.6,75.1c-8-5.6-15.2-10.5-15.2-19.9c0-12.1,14.1-17.2,14.1-29.6c0-9.1-6.7-15.7-16-20.1"/>
+                </svg>
+              </div> <!-- end .squiggle-->
+            </div>
+          </div>
+          <div class="eyes">
+            <div class="eye"></div>
+            <div class="eye"></div>
+          </div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+  </div>  
+ </div>
+</div>
 
-  <section class="palette">
-     <input class="add__color__input" colorpicker colorpicker-is-open="isOpen" colorpicker-size="300" type="text" ng-model="newColor" placeholder="#ffffff" />
+
+<aside class="col-md-3 toolbox">
+ <header>
+   <input class="add__color__input" colorpicker colorpicker-size="150" type="text" ng-model="newColor" placeholder="#ffffff" />
     <div class="palette__actions">
-      <button class="add__color" ng-click="addColor()" title="Add color"><i class="fa fa-plus" style="color:{{newColor}}" ></i></button>
+      <button class="add__color" ng-click="util.addColor()" title="Add color"><i class="fa fa-plus" style="color:{{newColor}}" ></i></button>
     </div>
+ </header>
+ <div class="side-bar-content">
+    {{util.activateSidebarInfo}}
+    {{util.cardClicked}}
+    <ul class="accordion">
+      <li>
+        <h3 ng-click="util.currHeader = 'bg'">Background
+          <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg>
+        </h3>
+        <span class="color-swatch" style="background: #{{colors[util.cardClicked].bg.hex}}"></span>
+      </li>
+      <li ng-click="util.currHeader = 'header'">
+        <h3>Header
+        <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg>
+        </h3>
+        <span class="color-swatch" style="background: #{{colors[util.cardClicked].header.hex}}"></span>
+        <span class="font-choice">{{colors[util.cardClicked].header.font}}</span>
+        <div class="test__result">
+              <span class="text__large pass-fail fa">
+                <i class="fa fa-check" ng-show="colors[util.cardClicked].header.largeText"></i>
+                <i class="fa fa-close" ng-hide="colors[util.cardClicked].header.largeText"></i>
+                AA
+              </span>
+              <span class="text__small pass-fail fa">
+                <i class="fa fa-check" ng-show="colors[util.cardClicked].header.smallText"></i>
+                <i class="fa fa-close" ng-hide="colors[util.cardClicked].header.smallText"></i>
+                AA
+              </span>
+        </div>
+      </li>
+      <li ng-click="util.currHeader = 'subHeader'">
+        <h3>Sub-header
+        <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg>
+        </h3>
+        <span class="color-swatch" style="background: #{{colors[util.cardClicked].subHeader.hex}}"></span>
+        <span class="font-choice">{{colors[util.cardClicked].subHeader.font}}</span>
+        <div class="test__result">
+              <span class="text__large pass-fail fa">
+                <i class="fa fa-check" ng-show="colors[util.cardClicked].subHeader.largeText"></i>
+                <i class="fa fa-close" ng-hide="colors[util.cardClicked].subHeader.largeText"></i>
+                AA
+              </span>
+              <span class="text__small pass-fail fa">
+                <i class="fa fa-check" ng-show="colors[util.cardClicked].subHeader.smallText"></i>
+                <i class="fa fa-close" ng-hide="colors[util.cardClicked].subHeader.smallText"></i>
+                AA
+              </span>
+        </div>
+      </li>
+      <li ng-click="util.currHeader = 'paragraph'">
+        <h3>Paragraph <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg></h3>
+        <span class="color-swatch"style="background: #{{colors[util.cardClicked].paragraph.hex}}"></span>
+        <span class="font-choice">{{colors[util.cardClicked].paragraph.font}}</span>
+        <div class="test__result">
+              <span class="text__large pass-fail fa">
+                <i class="fa fa-check" ng-show="colors[util.cardClicked].paragraph.largeText"></i>
+                <i class="fa fa-close" ng-hide="colors[util.cardClicked].paragraph.largeText"></i>
+                AA
+              </span>
+              <span class="text__small pass-fail fa">
+                <i class="fa fa-check" ng-show="colors[util.cardClicked].paragraph.smallText"></i>
+                <i class="fa fa-close" ng-hide="colors[util.cardClicked].paragraph.smallText"></i>
+                AA
+              </span>
+        </div>
+      </li>       
 
-   <!--  <div class="palette__color" ng-repeat="(i, item) in colors track by i">
-      <div class="color__input">
+    </ul>
+    <h3>Color Box</h3>
+    
+    <div class="palette__color" ng-repeat="color in colors track by $index">
+      <span class="color-choice color-swatch" style="background: #{{color.hex}}" ng-click="util.colorSelected(color.hex)"></span>
+
+      
+      <!-- <div class="color__input">
         <div class="color__picker" ng-style=bgStyles[i]></div>
         <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[i]" />
       </div>
@@ -31,151 +151,56 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
           <button class="fa fa-plus-square" ng-click="increaseLum(i)"></button>
         </li>
         <li>rgb(<span ng-bind="colorInfo[i].r"></span>, <span ng-bind="colorInfo[i].g"></span>, <span ng-bind="colorInfo[i].b"></span>)</li>
-      </ul>
-    </div> -->
-  </section>
-
-
-  <div class="clear"></div>
-  <div class="palette__pairings" ui-sortable="sortableOptions"> <!-- ui-sortable -->
-    <div id="color__{{color}}{{$index}}" class="card" style="width: 20rem;" ng-repeat="color in colors track by $index" >
- 
-  <div class="card-body">
-    <h4 class="card-title" class="color__title"  ng-init="parent = $index"><div class="color__picker" ng-style=bgStyles[$index]></div>
-
-
-<svg " ng-click="deleteColor($index)" class="delete-btn" width="30" height="30" fill="#4b4b4b" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M24.8 75.2c.2.2.5.3.7.3s.5-.1.7-.3L50 51.4l23.8 23.8c.2.2.5.3.7.3s.5-.1.7-.3c.4-.4.4-1 0-1.4L51.4 50l23.8-23.8c.4-.4.4-1 0-1.4s-1-.4-1.4 0L50 48.6 26.2 24.8c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4L48.6 50 24.8 73.8c-.4.4-.4 1 0 1.4z"/></svg>
-        <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[$index]" />
-        <ul class="color__properties">
-          <li style="padding-top: 10px">Luminance: <span ng-bind="colorInfo[$index].L.toFixed(3)"></span>
-            <span class="btn fa fa-plus-square" ng-click="increaseLum($index)"></span>
-            <span class="btn fa fa-minus-square " ng-click="decreaseLum($index)"></span>
-            
-          </li>
-          <!-- <li>rgb(<span ng-bind="colorInfo[$index].r"></span>, <span ng-bind="colorInfo[$index].g"></span>, <span ng-bind="colorInfo[$index].b"></span>)</li> -->
-      </ul></h4>
-    <p class="card-text"><div class="color" ng-style=styles[$index] ng-init="$last ? updateUI() : angular.noop()">
-        
-
-        <div class="color__nested" ng-repeat="nested in colors track by $index" ng-if="nested !== color">
-
-          <span class="color__pairing" ng-style=nestedStyles[$index] ng-bind="nested"></span>
-          <aside class="accessibility">
-            <div class="result__wrapper">
-              <div class="contrast" ng-bind="getContrastRatio(colorInfo[parent].L, colorInfo[$index].L)"></div>
-              <div class="pups"></div>
-              <div class="test__result">
-                <span class="text__large pass-fail fa" aria-hidden="true">
-                  <i class="fa fa-check"></i>
-                  <i class="fa fa-close"></i>
-                  AA
-                </span>
-                <span class="text__small pass-fail fa" aria-hidden="true">
-                  <i class="fa fa-check"></i>
-                  <i class="fa fa-close"></i>
-                  AA
-                </span>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div></p>
-
-
-
-
-        <span class="myHandle"></span>
-        <div class="job-type"></div>
-        <div class="smiley">
-      <div class="steam-container">
-      <div class="squiggle-container squiggle-container-1">
-      <div class="squiggle">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-           viewBox="0 0 28.1 80.6" style="enable-background:new 0 0 28.1 80.6;" xml:space="preserve">
-        <path class="" fill="none" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M22.6,75.1c-8-5.6-15.2-10.5-15.2-19.9c0-12.1,14.1-17.2,14.1-29.6c0-9.1-6.7-15.7-16-20.1"/>
-        </svg>
-      </div> <!-- end .squiggle-->
+      </ul> -->
     </div>
-      <div class="squiggle-container squiggle-container-2">
-      <div class="squiggle">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-           viewBox="0 0 28.1 80.6" style="enable-background:new 0 0 28.1 80.6;" xml:space="preserve">
-        <path class="" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M22.6,75.1c-8-5.6-15.2-10.5-15.2-19.9c0-12.1,14.1-17.2,14.1-29.6c0-9.1-6.7-15.7-16-20.1"/>
-        </svg>
-      </div> <!-- end .squiggle-->
-    </div>
-      <div class="squiggle-container squiggle-container-3">
-      <div class="squiggle">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-           viewBox="0 0 28.1 80.6" style="enable-background:new 0 0 28.1 80.6;" xml:space="preserve">
-        <path class="" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M22.6,75.1c-8-5.6-15.2-10.5-15.2-19.9c0-12.1,14.1-17.2,14.1-29.6c0-9.1-6.7-15.7-16-20.1"/>
-        </svg>
-      </div> <!-- end .squiggle-->
-    </div>
-    </div>
-  
-  <div class="eyes">
-    <div class="eye"></div>
-    <div class="eye"></div>
-  </div>
-  <div class="mouth"></div>
-</div>
-  
-  </div>
-</div>
-    
-  </div>
+    <h3>Font to use</h3>
+    <input id="font" type="text" />
+
  </div>
+</aside>
 
 
- <div class="legend cf">
-    <!-- <span>
-      <span class="text__large">AA</span> - Large Text
-    </span><br>
-    <span>
-      <span class="text__small">AA</span> - Small Text
-    </span> -->
-    <div class="legend-item">
-      <div style="padding: 0 5px;">Large Text</div>
-      <div class="test__result">
-        <span class="text__large fa pass" aria-hidden="true">
-          <i class="fa fa-check"></i>
-          pass AA
-        </span>
-      </div>
+<div class="legend cf">
+  <div class="legend-item">
+    <div style="padding: 0 5px;">Large Text</div>
+    <div class="test__result">
+      <span class="text__large fa pass" aria-hidden="true">
+        <i class="fa fa-check"></i>
+        pass AA
+      </span>
     </div>
-
-    <div class="legend-item">
-      <div style="padding: 0 5px;">Small Text</div>
-      <div class="test__result">
-        <span class="text__small fa pass" aria-hidden="true">
-          <i class="fa fa-check"></i>
-          pass AA
-        </span>
-      </div>
-    </div>
-
-    <div class="legend-item">
-      <div style="padding: 0 5px;">Large Text</div>
-      <div class="test__result">
-        <span class="text__large fa fail" style="padding: 0 5px;" aria-hidden="true">
-          <i class="fa fa-close"></i>
-          fail AA
-        </span>
-      </div>
-    </div>
-
-    <div class="legend-item">
-      <div style="padding: 0 5px;">Small Text</div>
-      <div class="test__result">
-        <span class="text__small fa fail" aria-hidden="true">
-          <i class="fa fa-close"></i>
-          fail AA
-        </span>
-      </div>
-    </div>
-
   </div>
+
+  <div class="legend-item">
+    <div style="padding: 0 5px;">Small Text</div>
+    <div class="test__result">
+      <span class="text__small fa pass" aria-hidden="true">
+        <i class="fa fa-check"></i>
+        pass AA
+      </span>
+    </div>
+  </div>
+
+  <div class="legend-item">
+    <div style="padding: 0 5px;">Large Text</div>
+    <div class="test__result">
+      <span class="text__large fa fail" style="padding: 0 5px;" aria-hidden="true">
+        <i class="fa fa-close"></i>
+        fail AA
+      </span>
+    </div>
+  </div>
+
+  <div class="legend-item">
+    <div style="padding: 0 5px;">Small Text</div>
+    <div class="test__result">
+      <span class="text__small fa fail" aria-hidden="true">
+        <i class="fa fa-close"></i>
+        fail AA
+      </span>
+    </div>
+  </div>
+</div>
 
 <svg width="50" height="50" ng-mouseover="showLegend()" ng-mouseleave="hideLegend()" class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 103 103"><defs><style>.cls-1{fill:none;stroke:#000000;stroke-miterlimit:10;stroke-width:3px;}</style></defs><title>Fichier 50</title><g data-name="Calque 1"><path d="M51.5 33.26A18.24 18.24 0 1 0 69.74 51.5 18.24 18.24 0 0 0 51.5 33.26zm0 35A16.78 16.78 0 1 1 68.28 51.5 16.8 16.8 0 0 1 51.5 68.28z"/><path d="M51.44 41.94c-3.7 0-5.77 2.29-5.8 5.92h1.61c0-2.63 1.33-4.56 4.11-4.56A3.48 3.48 0 0 1 55 46.74 4.56 4.56 0 0 1 53.35 50c-1.94 1.8-2.49 2.65-2.58 5.11h1.63c.1-2.24 0-2.19 2-4.15a5.7 5.7 0 0 0 2.22-4.34c0-2.92-2.35-4.68-5.18-4.68z"/><circle cx="51.5" cy="59.53" r="1.46"/><circle class="cls-1" cx="51.5" cy="51.5" r="50"/></g></svg>
 </div>
