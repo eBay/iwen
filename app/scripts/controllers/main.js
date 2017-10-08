@@ -52,8 +52,36 @@ angular.module('iwenApp')
       fontSelected : function(font){
           return getFontSelected(font);
       },
-      handlers : handlers()
+      handlers : handlers(),
+      increaseLum : function(key) {
+        var thisColor = hexToRgb($scope.colors[key].hex);
+        $scope.colors[key].rgbl.r = thisColor.r
+        $scope.colors[key].rgbl.g = thisColor.g
+        $scope.colors[key].rgbl.b = thisColor.b
+
+        if (thisColor.r !== 255 && thisColor.g !== 255 && thisColor.b !== 255) {
+          $scope.colors[key].hex = rgbToHex(thisColor.r + 1, thisColor.g + 1, thisColor.b + 1);
+        }
+      },
+      decreaseLum : function(key) {
+        var thisColor = hexToRgb($scope.colors[key].hex);
+        $scope.colors[key].rgbl.r = thisColor.r
+        $scope.colors[key].rgbl.g = thisColor.g
+        $scope.colors[key].rgbl.b = thisColor.b
+
+        if (thisColor.r !== 0 && thisColor.g !== 0 && thisColor.b !== 0) {
+          $scope.colors[key].hex = rgbToHex(thisColor.r - 1, thisColor.g - 1, thisColor.b - 1);
+        }
+      },
+      cleanHash : function(color){
+        return color.replace('#', '');
+      }
+
     };
+
+    function rgbToHex(r, g, b) {
+      return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
 
     function updateColorInfo() {
       for (var i = 0; i < $scope.colors.length; i++) {
@@ -189,6 +217,9 @@ angular.module('iwenApp')
 
     function getColorSelected(color){            
       console.log( $scope.colors[$scope.util.cardClicked]);
+      if(!$scope.colors[$scope.util.cardClicked]){
+        $scope.colors[$scope.util.cardClicked] = 0;
+      }
       var cur_selection = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader];
           console.log($scope.colors[$scope.util.cardClicked][$scope.util.currHeader])
           cur_selection.hex  = color; 
@@ -266,7 +297,7 @@ angular.module('iwenApp')
 
 
 
-    $scope.$watchCollection('colors', function(newValues, oldValues) {
+    $scope.$watchCollection('colors', function(newValues, oldValues) {      
       $scope.util.updateColorInfo;
       $scope.util.updateUI;      
     });
@@ -296,20 +327,7 @@ angular.module('iwenApp')
     //   handle: '.myHandle'
     // };
 
-    // $scope.increaseLum = function(key) {
-    //   var thisColor = hexToRgb($scope.colors[key]);
-    //   if (thisColor.r !== 255 && thisColor.g !== 255 && thisColor.b !== 255) {
-    //     $scope.colors[key] = rgbToHex(thisColor.r + 1, thisColor.g + 1, thisColor.b + 1);
-    //   }
-    // };
-
-    // $scope.decreaseLum = function(key) {
-    //   var thisColor = hexToRgb($scope.colors[key]);
-    //   if (thisColor.r !== 0 && thisColor.g !== 0 && thisColor.b !== 0) {
-    //     $scope.colors[key] = rgbToHex(thisColor.r - 1, thisColor.g - 1, thisColor.b - 1);
-    //   }
-    // };
-
+ 
 
     // $scope.showLegend = function(){      
     //   $('.legend').addClass('active');
