@@ -287,7 +287,22 @@ aside {
   margin-top:-9px;
   outline: none;
 }
+
+.color-props{
+  background:#ddd;
+  color:#fff;
+  width:100%;
+  float:left;
+  .color__input{
+    width:100%;
+    border:#252525;
+    float:left;
+  }
+}
+
+
 .color__properties {
+  background:#000;
   font-size: 14px;
   margin: 0;
   padding:0 12px;
