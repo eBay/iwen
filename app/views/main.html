@@ -65,7 +65,7 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
  <header>
    <input class="add__color__input" colorpicker colorpicker-size="150" type="text" ng-model="newColor" placeholder="#ffffff" />
     <div class="palette__actions">
-      <button class="add__color" ng-click="util.addColor()" title="Add color"><i class="fa fa-plus" style="color:{{newColor}}" ></i></button>
+      <button class="add__color" ng-click="util.addColor()" title="Add color"><i class="fa fa-plus" ></i></button>
     </div>
  </header>
  <div class="side-bar-content">
@@ -74,15 +74,16 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
         <h3>Background
           <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg>
         </h3>
-        {{colors[util.cardClicked].bg.hex}}
         <span class="color-swatch" style="background: {{colors[util.cardClicked].bg.hex}}"></span>
+        <label class="hex">{{colors[util.cardClicked].bg.hex}}</label>
+
       </li>
       <li ng-click="util.currHeader = 'header'">
         <h3>Header
         <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg>
         </h3>
-        {{colors[util.cardClicked].header.hex}}
         <span class="color-swatch" style="background: {{colors[util.cardClicked].header.hex}}"></span>
+        <label class="hex">{{colors[util.cardClicked].header.hex}}</label>
         <span class="font-choice">{{colors[util.cardClicked].header.font}}</span>
         <div class="test__result">
               <span class="text__large pass-fail fa">
@@ -101,7 +102,7 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
         <h3>Sub-header
         <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg>
         </h3>
-        {{colors[util.cardClicked].subHeader.hex}}
+        <label class="hex">{{colors[util.cardClicked].subHeader.hex}}</label>
         <span class="color-swatch" style="background: {{colors[util.cardClicked].subHeader.hex}}"></span>
         <span class="font-choice">{{colors[util.cardClicked].subHeader.font}}</span>
         <div class="test__result">
@@ -119,7 +120,7 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
       </li>
       <li ng-click="util.currHeader = 'paragraph'">
         <h3>Paragraph <svg width='15' height='15' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve"><path fill="#000000" d="M30,4C15.663,4,4,15.664,4,30c0,14.337,11.663,26,26,26s26-11.663,26-26C56,15.664,44.337,4,30,4z   M30,41.375c-6.272,0-11.375-5.103-11.375-11.375c0-6.271,5.103-11.375,11.375-11.375S41.375,23.729,41.375,30  C41.375,36.272,36.272,41.375,30,41.375z"/></svg></h3>
-        {{colors[util.cardClicked].paragraph.hex}}
+        <label class="hex">{{colors[util.cardClicked].paragraph.hex}}</label>
         <span class="color-swatch"style="background: {{colors[util.cardClicked].paragraph.hex}}"></span>
         <span class="font-choice">{{colors[util.cardClicked].paragraph.font}}</span>
         <div class="test__result">
@@ -159,25 +160,29 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
         <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[util.currColorSelected].hex" />
       </div>
 
-            <ul class="color__properties">
-        <li>Luminance: <span ng-bind="colors[util.currColorSelected].rgbl.toFixed(3)"></span>
+            <div class="color__properties">
+        <div class="luminance">   
         <button class="fa fa-minus-square" ng-click="util.decreaseLum(util.currColorSelected)"></button>
           <button class="fa fa-plus-square" ng-click="util.increaseLum(util.currColorSelected)"></button>
-        </li>
-        <li>rgb(<span ng-bind="colors[util.currColorSelected].bgl.r"></span>, <span ng-bind="colors[util.currColorSelected].bgl.g"></span>, <span ng-bind="colors[util.currColorSelected].bgl.b"></span>)</li>
+        </div>
+        <div class="rgb">rgb(<span ng-bind="colors[util.currColorSelected].bgl.r"></span>, <span ng-bind="colors[util.currColorSelected].bgl.g"></span>, <span ng-bind="colors[util.currColorSelected].bgl.b"></span>)</div>
       </ul>
 
     </div>  
-    <div class="choose-font">
+    <!-- <div class="choose-font">
       <h3>Font to use</h3>
       <input id="font" type="text" />
-    </div>
+    </div> -->
 
  </div>
 </aside>
 
 
 <div class="legend cf">
+  <header><h3>Accessibility is important.</h3><a href="" ng-click="showLegend()">Close</a></header>
+  <p>We evaluate your color combination using the WCAG 2.0 guidelines for contrast accessibility.</br></br>
+If your combination does not meet the guidelines, we find the closest accessible combination by modifying the color lightness.</br></br>
+We modify the lightness value only, in order to stay as true to the original color as possible.</p>
   <div class="legend-item">
     <div style="padding: 0 5px;">Large Text</div>
     <div class="test__result">
@@ -219,5 +224,5 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
   </div>
 </div>
 
-<svg width="50" height="50" ng-mouseover="showLegend()" ng-mouseleave="hideLegend()" class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 103 103"><defs><style>.cls-1{fill:none;stroke:#000000;stroke-miterlimit:10;stroke-width:3px;}</style></defs><title>Fichier 50</title><g data-name="Calque 1"><path d="M51.5 33.26A18.24 18.24 0 1 0 69.74 51.5 18.24 18.24 0 0 0 51.5 33.26zm0 35A16.78 16.78 0 1 1 68.28 51.5 16.8 16.8 0 0 1 51.5 68.28z"/><path d="M51.44 41.94c-3.7 0-5.77 2.29-5.8 5.92h1.61c0-2.63 1.33-4.56 4.11-4.56A3.48 3.48 0 0 1 55 46.74 4.56 4.56 0 0 1 53.35 50c-1.94 1.8-2.49 2.65-2.58 5.11h1.63c.1-2.24 0-2.19 2-4.15a5.7 5.7 0 0 0 2.22-4.34c0-2.92-2.35-4.68-5.18-4.68z"/><circle cx="51.5" cy="59.53" r="1.46"/><circle class="cls-1" cx="51.5" cy="51.5" r="50"/></g></svg>
+<svg width="50" height="50" ng-click="showLegend()" class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 103 103"><defs><style>.cls-1{fill:none;stroke:#000000;stroke-miterlimit:10;stroke-width:3px;}</style></defs><title>Fichier 50</title><g data-name="Calque 1"><path d="M51.5 33.26A18.24 18.24 0 1 0 69.74 51.5 18.24 18.24 0 0 0 51.5 33.26zm0 35A16.78 16.78 0 1 1 68.28 51.5 16.8 16.8 0 0 1 51.5 68.28z"/><path d="M51.44 41.94c-3.7 0-5.77 2.29-5.8 5.92h1.61c0-2.63 1.33-4.56 4.11-4.56A3.48 3.48 0 0 1 55 46.74 4.56 4.56 0 0 1 53.35 50c-1.94 1.8-2.49 2.65-2.58 5.11h1.63c.1-2.24 0-2.19 2-4.15a5.7 5.7 0 0 0 2.22-4.34c0-2.92-2.35-4.68-5.18-4.68z"/><circle cx="51.5" cy="59.53" r="1.46"/><circle class="cls-1" cx="51.5" cy="51.5" r="50"/></g></svg>
 </div>
