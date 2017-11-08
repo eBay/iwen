@@ -24,6 +24,16 @@ angular.module('iwenApp')
             $scope.colors.push(obj);
         }
 
+        $scope.cards = [{
+             id: 0,
+             bg: {hex: "#ffffff"},
+             bgl: {},
+             header: {},
+             subHeader: {},
+             paragraph: {}     
+        }]
+
+
 
 
         $scope.util = {
@@ -34,6 +44,7 @@ angular.module('iwenApp')
             activateSidebarInfo: 1,
             cardClicked: 0,
             currColorSelected: 0,
+            cardCount: 0,
             currHeader: 'bg',
             deleteColor: function(key) {
                 return getDeleteColor(key)
@@ -43,6 +54,21 @@ angular.module('iwenApp')
             },
             colorSelected: function(color, index) {
                 return getColorSelected(color, index);
+            },            
+            addCard : function(){
+              var i = $scope.cards.length;
+              var card = {
+               id: i++,
+               bg: {},
+               bgl: {},
+               header: {},
+               subHeader: {},
+               paragraph: {}           
+              }
+              console.log(card);
+              console.log($scope.cards);
+              $scope.cards.push(card);
+              
             },
             // fontSelected : function(font){
             //     return getFontSelected(font);
@@ -76,6 +102,13 @@ angular.module('iwenApp')
 
         };
 
+        
+        
+        // $scope.addCard = function(){
+        //       alert('test');              
+        // }
+
+
         function rgbToHex(r, g, b) {
             return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
         }
@@ -102,9 +135,10 @@ angular.module('iwenApp')
                 $scope.colors[i].id = i;
                 if (!$scope.colors[i].bg) {
                     $scope.colors[i].bg.hex = 'ffffff';
+                    $scope.cards[i].bg.hex = 'ffffff';
                 }
                 if ($scope.colors[i].bg.hex) {
-                                    alert('test');
+                                    
 
                     $scope.colors[i].bgl = getBgl($scope.colors[i].bg.hex);
                     $scope.colors[i].contrastRatio = getContrastRatio($scope.colors[i].bgl, $scope.colors[i].rgbl.l);
@@ -221,6 +255,7 @@ angular.module('iwenApp')
             var types_array = ['bg', 'header', 'subHeader', 'paragraph'];
 
             var cur_selection = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader];
+            var cur_card_selection = $scope.cards[$scope.util.cardClicked][$scope.util.currHeader];
             
             for (var i = 0; i < types_array.length; i++) {
               var x = types_array[i];
@@ -234,6 +269,14 @@ angular.module('iwenApp')
                 cur_selection.rgbl.r,
                 cur_selection.rgbl.g,
                 cur_selection.rgbl.b
+            )
+
+            cur_card_selection.hex = $scope.colors[index].hex;
+            cur_card_selection.rgbl = hexToRgb(cur_card_selection.hex);
+            cur_card_selection.rgbl.l = relativeLuminanceW3C(
+                cur_card_selection.rgbl.r,
+                cur_card_selection.rgbl.g,
+                cur_card_selection.rgbl.b
             )
 
             

@@ -192,6 +192,7 @@ h2{
   position: fixed !important;
   top:0;
   right:0;
+  overflow-y: scroll;
 
 }
 
@@ -203,6 +204,7 @@ aside {
     height:80px;
     padding:0px;
     padding-top:10px;
+    position: fixed;
   }
   input{
     border:none;
@@ -213,9 +215,15 @@ aside {
     letter-spacing: 2px;
   }
   .palette__actions {
-    position: absolute;
-    right:0;
-    top:30px;
+    position: fixed;
+    right: 25px;
+    top: 25px;
+    width: 40px;
+    height: 40px;
+    
+  }
+  .side-bar-content{
+    margin-top:100px;
   }
   button {
     outline: none;
@@ -265,6 +273,15 @@ aside {
   font-size: 18px;
   height: 56px;
   width: 220px;
+}
+
+.add__card{
+  width:30%;
+  height:275px;
+  background:#e9e9e9;
+  outline: none;
+  border:#aaa 1px solid;
+  margin-top:15px;
 }
 
 .color-box-container{
@@ -725,7 +742,7 @@ span.btn {
 .info{
   position: fixed;
   bottom:35px;
-  right:20px;
+  left:35px;
 }
 
 
