@@ -8,169 +8,480 @@
  * Controller of the iwenApp
  */
 angular.module('iwenApp')
-  .controller('MainCtrl', function($scope, $http, $timeout) {
+    .controller('MainCtrl', function($scope, $http, $timeout, $cookies) {
+        $scope.colorArray = ['#ffffff','#111820', '#006efc', '#ff5151', '#71c63e', '#ffdb0d'];
+        $scope.colors = [];
+        for (var i = 0; i < $scope.colorArray.length; i++) {
+            var obj = {
+                hex: $scope.colorArray[i],
+                bg: {},
+                bgl: {},
+                header: {},
+                subHeader: {},
+                paragraph: {}
 
-    $scope.colors = [];
-    $scope.styles = [];
-    $scope.bgStyles = [];
-    $scope.nestedStyles = [];
-    $scope.colorInfo = [];
-
-    $scope.$watchCollection('colors', function(newValues, oldValues) {
-      updateColorInfo();
-      $scope.updateUI();
-    });
-    $scope.isOpen = true;
-    $scope.colors = [
-      '2C3053',
-      '4D8BA4',
-      '7DBBA6',
-      'F8D4D6',
-      'F57CB2',
-      'FFA0C0',
-      'F7BE82',
-      'FFF865',
-      'A4DBFF'
-    ];
-
-    $scope.sortableOptions = {
-      handle: '.myHandle'
-    };
-
-    function updateColorInfo() {
-      var len = $scope.colors.length;
-      console.log($scope.colors);
-      while (len--) {
-        //Clean up input
-        $scope.colors[len] = $scope.colors[len].replace(/[\s#]/g, '');
-        if ($scope.colors[len].length === 6) {
-          $scope.colorInfo[len] = hexToRgb($scope.colors[len]);
-          $scope.colorInfo[len].L = relativeLuminanceW3C(
-            $scope.colorInfo[len].r,
-            $scope.colorInfo[len].g,
-            $scope.colorInfo[len].b
-          );
-          $scope.bgStyles[len] = {
-            'background-color': '#'+$scope.colors[len]
-          }
-          $scope.styles[len] = {
-            'background-color': '#'+$scope.colors[len],
-            //'width': (100 / $scope.colors.length)+'%'
-          }
-          $scope.nestedStyles[len] = {
-            'color': '#'+$scope.colors[len]
-          }
-        }
-      }
-    }
-
-    function hexToRgb(hex) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-      } : null;
-    }
-
-    function rgbToHex(r, g, b) {
-      return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-    }
-
-    // from http://www.w3.org/TR/WCAG20/#relativeluminancedef
-    function relativeLuminanceW3C(R8bit, G8bit, B8bit) {
-
-      var RsRGB = R8bit/255;
-      var GsRGB = G8bit/255;
-      var BsRGB = B8bit/255;
-
-      var R = (RsRGB <= 0.03928) ? RsRGB/12.92 : Math.pow((RsRGB+0.055)/1.055, 2.4);
-      var G = (GsRGB <= 0.03928) ? GsRGB/12.92 : Math.pow((GsRGB+0.055)/1.055, 2.4);
-      var B = (BsRGB <= 0.03928) ? BsRGB/12.92 : Math.pow((BsRGB+0.055)/1.055, 2.4);
-
-      // For the sRGB colorspace, the relative luminance of a color is defined as:
-      var L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
-
-      return L;
-    }
-
-    $scope.getContrastRatio = function(L1, L2) {
-      return ((Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05)).toFixed(2);
-    };
-
-    $scope.addColor = function() {
-      $scope.colors.unshift($scope.newColor); // push new color to the beginning of the array
-    };
-
-    $scope.deleteColor = function(key) {
-      $scope.colors.splice(key,1);
-    };
-
-    $scope.increaseLum = function(key) {
-      var thisColor = hexToRgb($scope.colors[key]);
-      if (thisColor.r !== 255 && thisColor.g !== 255 && thisColor.b !== 255) {
-        $scope.colors[key] = rgbToHex(thisColor.r + 1, thisColor.g + 1, thisColor.b + 1);
-      }
-    };
-
-    $scope.decreaseLum = function(key) {
-      var thisColor = hexToRgb($scope.colors[key]);
-      if (thisColor.r !== 0 && thisColor.g !== 0 && thisColor.b !== 0) {
-        $scope.colors[key] = rgbToHex(thisColor.r - 1, thisColor.g - 1, thisColor.b - 1);
-      }
-    };
-
-    $scope.updateUI = function(){
-
-      // This will only run after the ng-repeat has rendered its things to the DOM
-      $timeout(function(){
-        var now = new Date();
-        console.log('UI Updated', $scope.colors.length+' colors rendered', now.getTime());
-
-        var i = $scope.colors.length;
-
-        while (i--) {
-          //Clean up input
-
-          var element = angular.element('#color__'+$scope.colors[i]+i);
-          var contrast = element.find(' .contrast');
-          console.log($scope.colors[i].length);
-
-          var contrastValue;
-          var colorPairing;
-
-          contrast.each(function() {
-            colorPairing = $(this).parents().prev('.color__pairing').html();
-            $(this).nextAll().find('.fa').each(function() {
-              $(this).removeClass('pass').removeClass('fail');
-            });
-            if ($scope.colors[i].length === 6 && colorPairing.length === 6) {
-              contrastValue = $(this).html();
-              if (contrastValue < 3) {
-                $(this).nextAll().find('.fa').each(function() {
-                  $(this).addClass('fail');
-                })
-              } else if ( contrastValue < 4.5) {
-                $(this).nextAll().find('.text__small').each(function() {
-                  $(this).addClass('fail');
-                })
-                $(this).nextAll().find('.text__large').each(function() {
-                  $(this).addClass('pass');
-                })
-              } else if ( contrastValue >= 4.5) {
-                //console.log('both pass');
-                $(this).nextAll().find('.fa').each(function() {
-                  $(this).addClass('pass');
-                })
-              }
-            } else {
-              $(this).html('');
             }
-            console.log($scope.colors[i], colorPairing, contrastValue);
-          });
-
+            $scope.colors.push(obj);
         }
-      }, 0);
 
-    };
-  });
+        $scope.cards = [{
+             id: 0,
+             bg: {hex: "#ffffff"},
+             bgl: {},
+             header: {},
+             subHeader: {},
+             paragraph: {}     
+        }]
+
+
+
+
+        $scope.util = {
+            defaultBg: '#ffffff',
+            checkCookie: checkCookie(),
+            updateColorInfo: updateColorInfo(),
+            updateUI: updateUI(),
+            activateSidebarInfo: 1,
+            cardClicked: 0,
+            currColorSelected: 0,
+            cardCount: 0,
+            currHeader: 'bg',
+            deleteColor: function(key) {
+                return getDeleteColor(key)
+            },
+            addColor: function() {
+                return getAddColor();
+            },
+            colorSelected: function(color, index) {
+                return getColorSelected(color, index);
+            },            
+            addCard : function(){
+              var i = $scope.cards.length;
+              var card = {
+               id: i++,
+               bg: {},
+               bgl: {},
+               header: {},
+               subHeader: {},
+               paragraph: {}           
+              }
+              console.log(card);
+              console.log($scope.cards);
+              $scope.cards.push(card);
+              
+            },
+            // fontSelected : function(font){
+            //     return getFontSelected(font);
+            // },
+            handlers: handlers(),
+            increaseLum: function(key) {
+                var thisColor = hexToRgb($scope.colors[key].hex);
+                
+                $scope.colors[key].bgl.r = thisColor.r
+                $scope.colors[key].bgl.g = thisColor.g
+                $scope.colors[key].bgl.b = thisColor.b
+
+                if (thisColor.r !== 255 && thisColor.g !== 255 && thisColor.b !== 255) {
+                    $scope.colors[key].hex = '#' + rgbToHex(thisColor.r + 1, thisColor.g + 1, thisColor.b + 1);
+                }
+            },
+            decreaseLum: function(key) {
+                
+                var thisColor = hexToRgb($scope.colors[key].hex);
+                $scope.colors[key].bgl.r = thisColor.r
+                $scope.colors[key].bgl.g = thisColor.g
+                $scope.colors[key].bgl.b = thisColor.b
+
+                if (thisColor.r !== 0 && thisColor.g !== 0 && thisColor.b !== 0) {
+                    $scope.colors[key].hex = '#' + rgbToHex(thisColor.r - 1, thisColor.g - 1, thisColor.b - 1);
+                }
+            },
+            cleanHash: function(color) {
+                return color.replace('#', '');
+            }
+
+        };
+
+        
+        
+        // $scope.addCard = function(){
+        //       alert('test');              
+        // }
+
+
+        function rgbToHex(r, g, b) {
+            return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        function updateColorInfo() {
+            for (var i = 0; i < $scope.colors.length; i++) {
+                var color = $scope.colors;
+                //$scope.colors[i].hex = $scope.colors[i].hex.replace(/[\s#]/g, '');
+                if ($scope.colors[i].hex.length === 6) {
+                    $scope.colors[i].rgbl = hexToRgb($scope.colors[i].hex);
+                    $scope.colors[i].rgbl.l = relativeLuminanceW3C(
+                        $scope.colors[i].rgbl.r,
+                        $scope.colors[i].rgbl.g,
+                        $scope.colors[i].rgbl.b
+                    )
+                }
+            }
+        }
+
+
+        function updateUI() {
+            var i = $scope.colors.length;
+            for (var i = 0; i < $scope.colors.length; i++) {
+                $scope.colors[i].id = i;
+                if (!$scope.colors[i].bg) {
+                    $scope.colors[i].bg.hex = 'ffffff';
+                    $scope.cards[i].bg.hex = 'ffffff';
+                }
+                if ($scope.colors[i].bg.hex) {
+                                    
+
+                    $scope.colors[i].bgl = getBgl($scope.colors[i].bg.hex);
+                    $scope.colors[i].contrastRatio = getContrastRatio($scope.colors[i].bgl, $scope.colors[i].rgbl.l);
+                    var contrast_value = $scope.colors[i].contrastRatio;
+                    if (contrast_value < 3) {
+                        $scope.colors[i].smallText = 0;
+                        $scope.colors[i].largeText = 0;
+                    } else if (contrast_value < 4.5) {
+                        $scope.colors[i].smallText = 0;
+                        $scope.colors[i].largeText = 1;
+                    } else if (contrast_value >= 4.5) {
+                        $scope.colors[i].smallText = 1;
+                        $scope.colors[i].largeText = 1;
+                    }
+                }
+            }
+        };
+
+
+
+        function checkCookie() {
+            if ($cookies.get('colors') == undefined) {
+                return;
+            } else {
+                // var colors_str = $cookies.get('colors'); 
+                // $scope.colors = JSON.parse($cookies.get('colors'));
+            }
+        }
+
+
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+
+        // // from http://www.w3.org/TR/WCAG20/#relativeluminancedef
+        function relativeLuminanceW3C(R8bit, G8bit, B8bit) {
+
+            var RsRGB = R8bit / 255;
+            var GsRGB = G8bit / 255;
+            var BsRGB = B8bit / 255;
+
+            var R = (RsRGB <= 0.03928) ? RsRGB / 12.92 : Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+            var G = (GsRGB <= 0.03928) ? GsRGB / 12.92 : Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+            var B = (BsRGB <= 0.03928) ? BsRGB / 12.92 : Math.pow((BsRGB + 0.055) / 1.055, 2.4);
+
+            // For the sRGB colorspace, the relative luminance of a color is defined as:
+            var L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
+
+            return L;
+        }
+
+
+
+        function getContrastRatio(L1, L2) {
+
+            return ((Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05)).toFixed(2);
+        };
+
+
+        function getBgl(bghex) {
+            var rgb = hexToRgb(bghex);
+            var l = relativeLuminanceW3C(rgb.r, rgb.g, rgb.b)
+
+            return l;
+        }
+
+        function getAddColor() {
+            var color = {
+                id: $scope.colors.length,
+                hex: $scope.newColor,
+                header: {},
+                subHeader: {},
+                paragraph: {},
+                bg: {}
+            }
+            $scope.colors.push(color);
+            var colors_str = JSON.stringify($scope.colors);
+
+            $cookies.put('colors', colors_str);
+
+            $('.add__color__input').val('#ffffff');
+        }
+
+
+        function getDeleteColor(key) {
+            for (var i = 0; i < $scope.colors.length; i++) {
+                if ($scope.colors[i].id == key) {
+                    $scope.colors.splice(i, 1);
+                }
+
+                var colors_str = JSON.stringify($scope.colors);
+                $cookies.put('colors', colors_str);
+
+                //            return false;
+            }
+        }
+
+
+
+        function getColorSelected(color, index) {
+            
+            $scope.util.currColorSelected = index;
+            if (!$scope.colors[$scope.util.cardClicked]) {
+                $scope.colors[$scope.util.cardClicked] = 0;
+            }
+
+
+            var types_array = ['bg', 'header', 'subHeader', 'paragraph'];
+
+            var cur_selection = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader];
+            var cur_card_selection = $scope.cards[$scope.util.cardClicked][$scope.util.currHeader];
+            
+            for (var i = 0; i < types_array.length; i++) {
+              var x = types_array[i];
+              var cur_selection_ = $scope.colors[$scope.util.cardClicked][types_array[i]];
+              
+            }
+
+            cur_selection.hex = $scope.colors[index].hex;
+            cur_selection.rgbl = hexToRgb(cur_selection.hex);
+            cur_selection.rgbl.l = relativeLuminanceW3C(
+                cur_selection.rgbl.r,
+                cur_selection.rgbl.g,
+                cur_selection.rgbl.b
+            )
+
+            cur_card_selection.hex = $scope.colors[index].hex;
+            cur_card_selection.rgbl = hexToRgb(cur_card_selection.hex);
+            cur_card_selection.rgbl.l = relativeLuminanceW3C(
+                cur_card_selection.rgbl.r,
+                cur_card_selection.rgbl.g,
+                cur_card_selection.rgbl.b
+            )
+
+            
+
+            var cur_color = $scope.colors[$scope.util.cardClicked];
+            if (!cur_color.bg.hex) {
+                cur_color.bg.hex = 'ffffff';
+            }
+
+            
+
+            cur_color.bgl = hexToRgb(cur_color.hex);
+            
+            cur_color.bgl.l = relativeLuminanceW3C(
+                cur_color.bgl.r,
+                cur_color.bgl.g,
+                cur_color.bgl.b
+            )
+
+
+
+
+
+
+
+            cur_selection.contrastRatio = getContrastRatio($scope.colors[$scope.util.cardClicked].bg.rgbl.l, cur_selection.rgbl.l);
+            
+            var contrast_value = cur_selection.contrastRatio;
+
+
+            if (contrast_value < 3) {
+                cur_selection.smallText = 0;
+                cur_selection.largeText = 0;
+            } else if (contrast_value < 4.5) {
+                cur_selection.smallText = 0;
+                cur_selection.largeText = 1;
+            } else if (contrast_value >= 4.5) {
+                cur_selection.smallText = 1;
+                cur_selection.largeText = 1;
+            }
+
+            //console.log($scope.colors);
+        }
+
+
+        // function getFontSelected(){
+        //   if($scope.util.currHeader == 'bg'){
+        //       return false;
+        //     }
+        //     if($scope.util.currHeader != 'bg'){
+        //       $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].font = font;  
+        //     }
+        //     $scope.$apply()
+        // }
+
+
+        function handlers() {
+            $('aside li').on('click', function() {
+                $('aside li').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('#font').fontselect().change(function() {
+                var font = $(this).val().replace(/\+/g, ' ');
+                font = font.split(':');
+                $scope.util.fontSelected(font[0]);
+            });
+
+            $('.palette__pairings').on('click', '.card', function() {
+                $('.palette__pairings .card').removeClass('active');
+                $(this).addClass('active');
+            })
+
+
+            
+        }
+
+
+        function runAutoUpdates(){
+          var setRgbl = hexToRgb($scope.colors[$scope.util.currColorSelected].hex);
+            setRgbl.l = getBgl($scope.colors[$scope.util.currColorSelected].hex);              
+            $scope.colors[$scope.util.currColorSelected].bgl = setRgbl;
+            
+            $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].hex =  $scope.colors[$scope.util.currColorSelected].hex;
+            var hex = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].hex;
+            var index = $scope.util.currColorSelected;
+
+            getColorSelected(hex, index);
+          var cur_card = $scope.colors[$scope.util.cardClicked];
+          if(!angular.equals(cur_card.header, {})){
+            var h = $scope.colors[$scope.util.cardClicked].header;
+
+
+            h.contrastRatio = getContrastRatio(cur_card.bg.rgbl.l, h.rgbl.l);
+            
+            var contrast_value = h.contrastRatio;
+
+
+            if (contrast_value < 3) {
+                h.smallText = 0;
+                h.largeText = 0;
+            } else if (contrast_value < 4.5) {
+                h.smallText = 0;
+                h.largeText = 1;
+            } else if (contrast_value >= 4.5) {
+                h.smallText = 1;
+                h.largeText = 1;
+            }
+          }
+          if(!angular.equals(cur_card.subHeader, {})){
+            var sh = $scope.colors[$scope.util.cardClicked].subHeader;
+
+
+            sh.contrastRatio = getContrastRatio(cur_card.bg.rgbl.l, sh.rgbl.l);
+            
+            var contrast_value = sh.contrastRatio;
+
+
+            if (contrast_value < 3) {
+                sh.smallText = 0;
+                sh.largeText = 0;
+            } else if (contrast_value < 4.5) {
+                sh.smallText = 0;
+                sh.largeText = 1;
+            } else if (contrast_value >= 4.5) {
+                sh.smallText = 1;
+                sh.largeText = 1;
+            }
+
+          }
+          if(!angular.equals(cur_card.paragraph, {})){
+            var p = $scope.colors[$scope.util.cardClicked].paragraph;
+
+
+            p.contrastRatio = getContrastRatio(cur_card.bg.rgbl.l, p.rgbl.l);
+            
+            var contrast_value = p.contrastRatio;
+
+
+            if (contrast_value < 3) {
+                p.smallText = 0;
+                p.largeText = 0;
+            } else if (contrast_value < 4.5) {
+                p.smallText = 0;
+                p.largeText = 1;
+            } else if (contrast_value >= 4.5) {
+                p.smallText = 1;
+                p.largeText = 1;
+            }
+          }
+        }
+
+
+
+
+        $scope.$watchCollection('colors', function(newValues, oldValues) {
+            
+            $scope.util.updateColorInfo;
+            $scope.util.updateUI;
+        });
+
+        $scope.$watch('colors', function() {
+            
+            
+            
+            runAutoUpdates();
+
+        }, true);
+
+
+
+        for (var i = 0; i < $scope.colors.length; i++) {
+          var setRgbl = hexToRgb($scope.colors[i].hex);
+              setRgbl.l = getBgl($scope.colors[i].hex);
+              $scope.colors[i].bgl = setRgbl;          
+        }
+
+        $scope.util.checkCookie;
+
+
+        $scope.showLegend = function(){      
+            $('.legend').toggleClass('active');
+       }
+
+
+$scope.hideLegend = function(){
+  $('.legend').removeClass('active');
+}
+        
+
+    });
+
+
+
+
+// $scope.styles = [];
+// $scope.bgStyles = [];
+// $scope.nestedStyles = [];
+// $scope.colorInfo = [];
+// $scope.colorsMaster = [];
+// $scope.currentColor = 0;
+// $scope.isOpen = true;
+// $scope.sortableOptions = {
+//   handle: '.myHandle'
+// };
+
+
+
