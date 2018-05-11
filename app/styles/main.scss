@@ -37,16 +37,15 @@ h1 {
   max-width: 1920px;
 }
 
+#main {
+
+}
 .colorpicker {
   position: relative;
 }
 
-body > .colorpicker { /* select all colorpicker class first */
-  display: block;
-}
-
-body > .colorpicker ~ .colorpicker { /* Select all but the first .colorpicker child of body */
-  display: none;
+.colorpicker.dropdown {
+  display: block!important;  
 }
 
 .palette {
