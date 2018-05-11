@@ -163,15 +163,16 @@ h1 {
   max-width: 1920px;
 }
 
-#main {
-
-}
 .colorpicker {
   position: relative;
 }
 
-.colorpicker.dropdown {
-  display: block!important;  
+body > .colorpicker { /* select all colorpicker class first */
+  display: block;
+}
+
+body > .colorpicker ~ .colorpicker { /* Select all but the first .colorpicker child of body */
+  display: none;
 }
 
 h2{
