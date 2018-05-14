@@ -246,21 +246,15 @@ angular.module('iwenApp')
 
     function handlers(){
        $('aside li').on('click', function(){
-          $('aside li').removeClass('active');
-          $(this).addClass('active');
+          $('aside li h3').removeClass('active');
+          $(this).find('h3').addClass('active');
        });
 
-       $('#font').fontselect().change(function(){
+      $('#font').fontselect().change(function(){
             var font = $(this).val().replace(/\+/g, ' ');
             font = font.split(':');
             $scope.util.fontSelected(font[0]);
-       });
-
-       $('.palette__pairings').on('click', '.card', function(){
-          $('.palette__pairings .card').removeClass('active');
-          $(this).addClass('active');
-       })
-
+      });
     }
 
 
