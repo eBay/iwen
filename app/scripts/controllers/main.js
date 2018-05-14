@@ -15,33 +15,41 @@ angular.module('iwenApp')
     $scope.bgStyles = [];
     $scope.nestedStyles = [];
     $scope.colorInfo = [];
+    $scope.sessionId;
 
+    
+
+    if($cookies.get('sessionId') == undefined){
+      $cookies.put('sessionId', Date.now() * getRandomInt(1, 10));  
+    }
+    else{
+      console.log($cookies.get('sessionId'))
+    }
+
+
+
+
+
+
+    $scope.$watchCollection('newColor', function(nv) {
+      console.log(nv)
+    });
     $scope.$watchCollection('colors', function(newValues, oldValues) {
       updateColorInfo();
       $scope.updateUI();
     });
     $scope.isOpen = true;
-    
-
-
-
-    if($cookies.get('colors') == undefined){
+    $scope.colors = [      
       
-    }
-    else{
+    ];
 
-
-     //
-  
-
-      var colors_str = $cookies.get('colors'); 
-      $scope.colors = JSON.parse($cookies.get('colors'));
-
-
-      console.log('scopre', $scope.colors) 
-      console.log('sdsdsds',$cookies.get('colors'))
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    if(!$scope.colors.length){
+      $('body').addClass('no-colors');
+    }
 
     $scope.sortableOptions = {
       handle: '.myHandle'
@@ -109,30 +117,13 @@ angular.module('iwenApp')
     };
 
     $scope.addColor = function() {
-       $scope.colors.unshift($scope.newColor);
-       var colors_str = JSON.stringify($scope.colors);
-    
-
-
-      $cookies.put('colors', colors_str); 
-
+      $scope.colors.unshift($scope.newColor); // push new color to the beginning of the array
       $('.add__color__input').val('#ffffff');
       $('.palette__actions i').attr('style','color:#000000');
-
-       // push new color to the beginning of the array
     };
 
     $scope.deleteColor = function(key) {
-
-      
       $scope.colors.splice(key,1);
-
-      var colors_str = JSON.stringify($scope.colors);
-    
-
-
-      $cookies.put('colors', colors_str); 
-
     };
 
     $scope.increaseLum = function(key) {
