@@ -278,8 +278,7 @@ aside {
 .add__card{
   width:30%;
   height:275px;
-  background:#eee;
-  margin-left:10px;
+  background:#e9e9e9;
   outline: none;
   border:#aaa 1px solid;
   margin-top:15px;
@@ -449,12 +448,10 @@ aside {
 
   .delete-btn {
     
-    float: right;
-    margin-top: 8px;
-    margin-right: 5px;
-    cursor: pointer;
-    background: #fff;
-    border-radius: 50%;
+    float:right;
+    margin-top:8px;
+    margin-right:5px;    
+    cursor:pointer;
   }
 
 .color__title {
