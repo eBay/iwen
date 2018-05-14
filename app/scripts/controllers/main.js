@@ -8,111 +8,86 @@
  * Controller of the iwenApp
  */
 angular.module('iwenApp')
-  .controller('MainCtrl', function($scope, $http, $timeout, $cookies) {       
-    $scope.colors = [
-    { 
-      hex : 'fff000',
-      bg: {},
-      header: {},
-      subHeader : {},
-      paragraph:{}
-    },
-    {
-      hex : 'f00000',
-      bg: {},
-      header: {},
-      subHeader : {},
-      paragraph:{}
-    },
-    {
-      hex : '111111',
-      bg: {},
-      header: {},
-      subHeader : {},
-      paragraph:{}
+  .controller('MainCtrl', function($scope, $http, $timeout, $cookies) {
+
+    $scope.colors = [];
+    $scope.styles = [];
+    $scope.bgStyles = [];
+    $scope.nestedStyles = [];
+    $scope.colorInfo = [];
+
+    $scope.$watchCollection('colors', function(newValues, oldValues) {
+      updateColorInfo();
+      $scope.updateUI();
+    });
+    $scope.isOpen = true;
+
+
+
+    $scope.showLegend = function(){
+      
+      $('.legend').addClass('active');
+    }
+
+
+    $scope.hideLegend = function(){
+      $('.legend').removeClass('active');
+    }
+    
+
+
+
+
+    $('.info').on('mouseleave', function(){
+      $('.legend').toggleClass('active');
+    })
+
+
+    if($cookies.get('colors') == undefined){
+      
+    }
+    else{
+
+      var colors_str = $cookies.get('colors'); 
+      $scope.colors = JSON.parse($cookies.get('colors'));
 
     }
-    ];
-    $scope.util = {
-      defaultBg : 'ffffff',
-      checkCookie : checkCookie(),
-      updateColorInfo : updateColorInfo(),
-      updateUI : updateUI(),      
-      activateSidebarInfo : 1,
-      cardClicked : 0,
-      deleteColor : function(key){
-          return getDeleteColor(key)
-      },
-      addColor : function(){
-          return getAddColor();
-      },
-      colorSelected : function(color){
-          return getColorSelected(color);
-      },
-      fontSelected : function(font){
-          return getFontSelected(font);
-      },
-      handlers : handlers()
+
+
+
+    $scope.sortableOptions = {
+      handle: '.myHandle'
     };
 
     function updateColorInfo() {
-      for (var i = 0; i < $scope.colors.length; i++) {
-        var color = $scope.colors;
-        $scope.colors[i].hex = $scope.colors[i].hex.replace(/[\s#]/g, '');
-        if ($scope.colors[i].hex.length === 6) {
-          $scope.colors[i].rgbl = hexToRgb($scope.colors[i].hex);
-          $scope.colors[i].rgbl.l = relativeLuminanceW3C(
-            $scope.colors[i].rgbl.r,
-            $scope.colors[i].rgbl.g,
-            $scope.colors[i].rgbl.b
-          )             
-       }
+      var len = $scope.colors.length;
+    
+      while (len--) {
+        //Clean up input
+        $scope.colors[len] = $scope.colors[len].replace(/[\s#]/g, '');
+        if ($scope.colors[len].length === 6) {
+          $scope.colorInfo[len] = hexToRgb($scope.colors[len]);
+          $scope.colorInfo[len].L = relativeLuminanceW3C(
+            $scope.colorInfo[len].r,
+            $scope.colorInfo[len].g,
+            $scope.colorInfo[len].b
+          );
+          $scope.bgStyles[len] = {
+            'background-color': '#'+$scope.colors[len]
+          }
+          $scope.styles[len] = {
+            'background-color': '#'+$scope.colors[len],
+            //'width': (100 / $scope.colors.length)+'%'
+          }
+          $scope.nestedStyles[len] = {
+            'color': '#'+$scope.colors[len]
+          }
+        }
       }
     }
 
-
-    function updateUI(){
-          var i = $scope.colors.length;
-          for (var i = 0; i < $scope.colors.length; i++) {
-            $scope.colors[i].id = i;
-            if(!$scope.colors[i].bg){
-              $scope.colors[i].bg.hex = 'ffffff';
-            }
-            if($scope.colors[i].bg.hex){
-
-              $scope.colors[i].bgl = getBgl($scope.colors[i].bg.hex);  
-              $scope.colors[i].contrastRatio = getContrastRatio($scope.colors[i].bgl, $scope.colors[i].rgbl.l);
-              var contrast_value = $scope.colors[i].contrastRatio;
-              if (contrast_value < 3) {
-                  $scope.colors[i].smallText = 0;
-                  $scope.colors[i].largeText = 0;
-              } 
-              else if ( contrast_value < 4.5) {
-                  $scope.colors[i].smallText = 0;
-                  $scope.colors[i].largeText = 1;
-              } else if ( contrast_value >= 4.5) {
-                $scope.colors[i].smallText = 1;
-                $scope.colors[i].largeText = 1;
-              }
-            }
-          }
-    };
-
-
-
-    function checkCookie(){
-        if($cookies.get('colors') == undefined){          
-          return;
-        }
-        else{          
-          // var colors_str = $cookies.get('colors'); 
-          // $scope.colors = JSON.parse($cookies.get('colors'));
-        }
-    }
-
-
     function hexToRgb(hex) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);      
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result ? {
           r: parseInt(result[1], 16),
           g: parseInt(result[2], 16),
@@ -120,8 +95,11 @@ angular.module('iwenApp')
       } : null;
     }
 
+    function rgbToHex(r, g, b) {
+      return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
 
-        // // from http://www.w3.org/TR/WCAG20/#relativeluminancedef
+    // from http://www.w3.org/TR/WCAG20/#relativeluminancedef
     function relativeLuminanceW3C(R8bit, G8bit, B8bit) {
 
       var RsRGB = R8bit/255;
@@ -138,179 +116,129 @@ angular.module('iwenApp')
       return L;
     }
 
-
-
-    function getContrastRatio(L1, L2) {
-
+    $scope.getContrastRatio = function(L1, L2) {
       return ((Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05)).toFixed(2);
     };
 
-
-    function getBgl(bghex){
-      var rgb = hexToRgb(bghex);      
-      var l   = relativeLuminanceW3C(rgb.r, rgb.g, rgb.b)
-
-      return l;
-    }
-
-    function getAddColor(){
-      var color = {
-            id : $scope.colors.length,
-            hex : $scope.newColor.replace(/[\s#]/g, ''),
-            header: {},
-            subHeader : {},
-            paragraph:{},
-            bg: {}
-          }
-          $scope.colors.push(color);
-          var colors_str = JSON.stringify($scope.colors);
-
-          $cookies.put('colors', colors_str); 
-
-          $('.add__color__input').val('#ffffff');
-          $('.palette__actions i').attr('style','color:#000000');
-    }
+    $scope.addColor = function() {
+       $scope.colors.unshift($scope.newColor);
+       var colors_str = JSON.stringify($scope.colors);
+    
 
 
-    function getDeleteColor(key){
-      for (var i = 0; i < $scope.colors.length; i++) {
-            if($scope.colors[i].id == key){
-              $scope.colors.splice(i,1);    
-            }
+      $cookies.put('colors', colors_str); 
 
-            var colors_str = JSON.stringify($scope.colors);
-            $cookies.put('colors', colors_str); 
+      $('.add__color__input').val('#ffffff');
+      $('.palette__actions i').attr('style','color:#000000');
 
-              //            return false;
-          }
-    }
+       // push new color to the beginning of the array
+    };
+
+    $scope.deleteColor = function(key) {
+
+      
+      $scope.colors.splice(key,1);
+
+      var colors_str = JSON.stringify($scope.colors);
+    
 
 
+      $cookies.put('colors', colors_str); 
 
-    function getColorSelected(color){            
-      console.log( $scope.colors[$scope.util.cardClicked]);
-      var cur_selection = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader];
-          console.log($scope.colors[$scope.util.cardClicked][$scope.util.currHeader])
-          cur_selection.hex  = color; 
-          cur_selection.rgbl  = hexToRgb(cur_selection.hex); 
-          cur_selection.rgbl.l = relativeLuminanceW3C(
-                                 cur_selection.rgbl.r,
-                                 cur_selection.rgbl.g,
-                                 cur_selection.rgbl.b
-                               )     
+    };
 
-          console.log($scope.colors)
+    $scope.increaseLum = function(key) {
+      var thisColor = hexToRgb($scope.colors[key]);
+      if (thisColor.r !== 255 && thisColor.g !== 255 && thisColor.b !== 255) {
+        $scope.colors[key] = rgbToHex(thisColor.r + 1, thisColor.g + 1, thisColor.b + 1);
+      }
+    };
 
-          if (!$scope.colors[$scope.util.cardClicked].bgl){
-            var cur_color = $scope.colors[$scope.util.cardClicked];
-              if(!cur_color.bg.hex){
-                cur_color.bg.hex = 'ffffff';
+    $scope.decreaseLum = function(key) {
+      var thisColor = hexToRgb($scope.colors[key]);
+      if (thisColor.r !== 0 && thisColor.g !== 0 && thisColor.b !== 0) {
+        $scope.colors[key] = rgbToHex(thisColor.r - 1, thisColor.g - 1, thisColor.b - 1);
+      }
+    };
+
+    $scope.updateUI = function(){
+
+      // This will only run after the ng-repeat has rendered its things to the DOM
+      $timeout(function(){
+        var now = new Date();
+      
+
+        var i = $scope.colors.length;
+
+        while (i--) {
+          //Clean up input
+
+          var element = angular.element('#color__'+$scope.colors[i]+i);
+          var contrast = element.find(' .contrast');
+        
+
+          var contrastValue;
+          var colorPairing;
+
+          contrast.each(function() {
+            //console.log('yes')          
+            colorPairing = $(this).parents().prev('.color__pairing').html();
+            $(this).nextAll().find('.fa').each(function() {
+              $(this).removeClass('pass').removeClass('fail');
+            });
+            if ($scope.colors[i].length === 6 && colorPairing.length === 6) {
+              contrastValue = $(this).html();
+              if (contrastValue < 3) {
+                $(this).nextAll().find('.fa').each(function() {
+                  $(this).addClass('fail');
+                })
+              } else if ( contrastValue < 4.5) {
+                $(this).nextAll().find('.text__small').each(function() {
+                  $(this).addClass('fail');
+                })
+                $(this).nextAll().find('.text__large').each(function() {
+                  $(this).addClass('pass');
+                })
+              } else if ( contrastValue >= 4.5) {
+                
+                $(this).nextAll().find('.fa').each(function() {
+                  $(this).addClass('pass');
+                })
               }
+            } else {
+              $(this).html('');
+            }
+          
+          });
 
-              cur_color.bgl  =  hexToRgb(cur_color.bg.hex); 
-              console.log(cur_color);
-              cur_color.bgl.l = relativeLuminanceW3C(
-                                 cur_color.bgl.r,
-                                 cur_color.bgl.g,
-                                 cur_color.bgl.b
-                               )     
-          }
-
-          cur_selection.contrastRatio = getContrastRatio($scope.colors[$scope.util.cardClicked].bgl.l, cur_selection.rgbl.l);
-              var contrast_value = cur_selection.contrastRatio;
-
-              if (contrast_value < 3) {
-                  cur_selection.smallText = 0;
-                  cur_selection.largeText = 0;
-              } 
-              else if ( contrast_value < 4.5) {
-                  cur_selection.smallText = 0;
-                  cur_selection.largeText = 1;
-              } else if ( contrast_value >= 4.5) {
-                cur_selection.smallText = 1;
-                cur_selection.largeText = 1;
-          }
-    }
-
-
-    function getFontSelected(){
-      if($scope.util.currHeader == 'bg'){
-          return false;
         }
-        if($scope.util.currHeader != 'bg'){
-          $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].font = font;  
-        }
-        $scope.$apply()
-    }
 
 
-    function handlers(){
-       $('aside li').on('click', function(){
-          $('aside li h3').removeClass('active');
-          $(this).find('h3').addClass('active');
-       });
+        angular.element(".card").each(function(){
+          var totalTest = 0;
+          var totalPass = 0;
+         $(this).find('.pass-fail').each(function(){
+             totalTest++;
+            if($(this).hasClass('pass')){
+              totalPass++
+            }
+         })
+          var finalNum = totalTest - totalPass;
+          var jobType;
+           if(totalPass > (totalTest / 1.75)){
+              jobType = 'happy';
+           }
+           else if(totalPass >= (totalTest / 3)){
+             jobType = 'neutral';
+           }
+           if(totalPass <= (totalTest / 3)){
+             jobType = 'bad';
+           }
 
-      $('#font').fontselect().change(function(){
-            var font = $(this).val().replace(/\+/g, ' ');
-            font = font.split(':');
-            $scope.util.fontSelected(font[0]);
-      });
-    }
+           $(this).find('.smiley').attr('id',jobType)
+       
+        });
+      }, 0);
 
-
-
-
-    $scope.$watchCollection('colors', function(newValues, oldValues) {
-      $scope.util.updateColorInfo;
-      $scope.util.updateUI;      
-    });
-
-
-
-
-    $scope.util.checkCookie;
-
+    };
   });
-
-
-
-
-
-
-
-
-// $scope.styles = [];
-    // $scope.bgStyles = [];
-    // $scope.nestedStyles = [];
-    // $scope.colorInfo = [];
-    // $scope.colorsMaster = [];
-    // $scope.currentColor = 0;
-    // $scope.isOpen = true;
-    // $scope.sortableOptions = {
-    //   handle: '.myHandle'
-    // };
-
-    // $scope.increaseLum = function(key) {
-    //   var thisColor = hexToRgb($scope.colors[key]);
-    //   if (thisColor.r !== 255 && thisColor.g !== 255 && thisColor.b !== 255) {
-    //     $scope.colors[key] = rgbToHex(thisColor.r + 1, thisColor.g + 1, thisColor.b + 1);
-    //   }
-    // };
-
-    // $scope.decreaseLum = function(key) {
-    //   var thisColor = hexToRgb($scope.colors[key]);
-    //   if (thisColor.r !== 0 && thisColor.g !== 0 && thisColor.b !== 0) {
-    //     $scope.colors[key] = rgbToHex(thisColor.r - 1, thisColor.g - 1, thisColor.b - 1);
-    //   }
-    // };
-
-
-    // $scope.showLegend = function(){      
-    //   $('.legend').addClass('active');
-    // }
-
-
-    // $scope.hideLegend = function(){
-    //   $('.legend').removeClass('active');
-    // }
-
