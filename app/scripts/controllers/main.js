@@ -9,7 +9,7 @@
  */
 angular.module('iwenApp')
     .controller('MainCtrl', function($scope, $http, $timeout, $cookies) {
-        $scope.colorArray = ['#ffffff','#111820', '#006efc', '#ff5151', '#71c63e', '#ffdb0d'];
+        $scope.colorArray = ['#111820', '#006efc', '#ff5151', '#71c63e', '#ffdb0d'];
         $scope.colors = [];
         for (var i = 0; i < $scope.colorArray.length; i++) {
             var obj = {
@@ -192,6 +192,7 @@ angular.module('iwenApp')
             $cookies.put('colors', colors_str);
 
             $('.add__color__input').val('#ffffff');
+            $('.palette__actions i').attr('style', 'color:#000000');
         }
 
 
@@ -224,7 +225,9 @@ angular.module('iwenApp')
             
             for (var i = 0; i < types_array.length; i++) {
               var x = types_array[i];
+              console.log('ssdsdsdssxxxxx', x);
               var cur_selection_ = $scope.colors[$scope.util.cardClicked][types_array[i]];
+              console.log('sdsdsdsd', cur_selection_);
               
             }
 
@@ -312,81 +315,6 @@ angular.module('iwenApp')
         }
 
 
-        function runAutoUpdates(){
-          var setRgbl = hexToRgb($scope.colors[$scope.util.currColorSelected].hex);
-            setRgbl.l = getBgl($scope.colors[$scope.util.currColorSelected].hex);              
-            $scope.colors[$scope.util.currColorSelected].bgl = setRgbl;
-            
-            $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].hex =  $scope.colors[$scope.util.currColorSelected].hex;
-            var hex = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].hex;
-            var index = $scope.util.currColorSelected;
-
-            getColorSelected(hex, index);
-          var cur_card = $scope.colors[$scope.util.cardClicked];
-          if(!angular.equals(cur_card.header, {})){
-            var h = $scope.colors[$scope.util.cardClicked].header;
-
-
-            h.contrastRatio = getContrastRatio(cur_card.bg.rgbl.l, h.rgbl.l);
-            
-            var contrast_value = h.contrastRatio;
-
-
-            if (contrast_value < 3) {
-                h.smallText = 0;
-                h.largeText = 0;
-            } else if (contrast_value < 4.5) {
-                h.smallText = 0;
-                h.largeText = 1;
-            } else if (contrast_value >= 4.5) {
-                h.smallText = 1;
-                h.largeText = 1;
-            }
-          }
-          if(!angular.equals(cur_card.subHeader, {})){
-            var sh = $scope.colors[$scope.util.cardClicked].subHeader;
-
-
-            sh.contrastRatio = getContrastRatio(cur_card.bg.rgbl.l, sh.rgbl.l);
-            
-            var contrast_value = sh.contrastRatio;
-
-
-            if (contrast_value < 3) {
-                sh.smallText = 0;
-                sh.largeText = 0;
-            } else if (contrast_value < 4.5) {
-                sh.smallText = 0;
-                sh.largeText = 1;
-            } else if (contrast_value >= 4.5) {
-                sh.smallText = 1;
-                sh.largeText = 1;
-            }
-
-          }
-          if(!angular.equals(cur_card.paragraph, {})){
-            var p = $scope.colors[$scope.util.cardClicked].paragraph;
-
-
-            p.contrastRatio = getContrastRatio(cur_card.bg.rgbl.l, p.rgbl.l);
-            
-            var contrast_value = p.contrastRatio;
-
-
-            if (contrast_value < 3) {
-                p.smallText = 0;
-                p.largeText = 0;
-            } else if (contrast_value < 4.5) {
-                p.smallText = 0;
-                p.largeText = 1;
-            } else if (contrast_value >= 4.5) {
-                p.smallText = 1;
-                p.largeText = 1;
-            }
-          }
-        }
-
-
 
 
         $scope.$watchCollection('colors', function(newValues, oldValues) {
@@ -396,10 +324,19 @@ angular.module('iwenApp')
         });
 
         $scope.$watch('colors', function() {
+          //alert($scope.util.currColorSelected);
             
             
+            var setRgbl = hexToRgb($scope.colors[$scope.util.currColorSelected].hex);
+            setRgbl.l = getBgl($scope.colors[$scope.util.currColorSelected].hex);              
+            $scope.colors[$scope.util.currColorSelected].bgl = setRgbl;
             
-            runAutoUpdates();
+            $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].hex =  $scope.colors[$scope.util.currColorSelected].hex;
+            var hex = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader].hex;
+            var index = $scope.util.currColorSelected;
+
+            getColorSelected(hex, index);
+
 
         }, true);
 
@@ -412,17 +349,6 @@ angular.module('iwenApp')
         }
 
         $scope.util.checkCookie;
-
-
-        $scope.showLegend = function(){      
-            $('.legend').toggleClass('active');
-       }
-
-
-$scope.hideLegend = function(){
-  $('.legend').removeClass('active');
-}
-        
 
     });
 
@@ -442,3 +368,11 @@ $scope.hideLegend = function(){
 
 
 
+// $scope.showLegend = function(){      
+//   $('.legend').addClass('active');
+// }
+
+
+// $scope.hideLegend = function(){
+//   $('.legend').removeClass('active');
+// }

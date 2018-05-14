@@ -25,16 +25,6 @@ aside li{
   border:1px solid #f9f9f9;
   width:94%;
   margin-left:3%;
-  span{
-    float:left;
-  }
-  label.hex{
-    float:right;
-    margin-top:14px;
-    margin-right:10px;
-    letter-spacing: 1px;
-
-  }
   h3{
     padding:0;
     margin:0;
@@ -89,8 +79,8 @@ ul,li{
 }
 
 header{
-  background:#252525;
-  color:#fff;
+  background:#fff;
+  color:#327FDE;
   font-family: helvetica ;
   border-bottom: 1px solid #ddd;
   height:80px;
@@ -98,11 +88,6 @@ header{
   padding:20px;
   padding-top:10px;
   margin:0;
-  input{
-    background: none;
-    color:#fff !important;
-    letter-spacing: 5px !important;
-  }
 }
 h1 {
   font-size: 1.5rem;
@@ -112,7 +97,7 @@ h1 {
   margin-top:0 !important;
   float:left;
   div {
-    color: #ddd;
+    color: #666;
     letter-spacing: 1px;
     font-size: 1rem;
 
@@ -223,7 +208,7 @@ aside {
       margin: 0 floor($gutter/$ratio/$ratio) 0;
       font-size: 32px;
       font-weight: normal;
-      color:#fff;
+      color:#000;
       padding:10px 14px;
       border-radius: 50%;
     }
@@ -244,18 +229,6 @@ aside {
   font-size: 28px;
   letter-spacing: 3px;
   color:#000000;
-  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #ddd;
-  }
-  &::-moz-placeholder { /* Firefox 19+ */
-    color: #ddd;
-  }
-  &:-ms-input-placeholder { /* IE 10+ */
-    color: #ddd;
-  }
-  &:-moz-placeholder { /* Firefox 18- */
-    color: #ddd;
-  }
 }
 .palette .add__color {
   cursor: pointer;
@@ -288,18 +261,10 @@ aside {
   }
 }
 .color__input {
+  display: flex;
   align-items: center;
-  width: 100%;
-  float:left;
-  float:left;
-  input{
-    border:#252525 1px solid;
-    border-radius: 40px;
-    width:90%;
-    margin-left:5%;
-    float: left;
-    padding:10px 20px;
-  }
+  width: 165px;
+  margin: 0 0 floor($gutter/$ratio) 0;
 }
 .color__picker {
   border-radius: floor($gutter * $ratio) - 3px;
@@ -332,40 +297,22 @@ aside {
     width:100%;
     border:#252525;
     float:left;
-    background:#252525;
   }
 }
 
 
 .color__properties {
-  background:#252525;
+  background:#000;
   font-size: 14px;
   margin: 0;
   padding:0 12px;
   padding-right:5px;
-  float: left;
-  position: relative;
-  width:100%;
-  .luminance{
-    position: absolute;
-    top:-40px;
-    right:50px;
-    font-size:18px;
-  }
-  .rgb{
-    height:50px;
-    text-align: center;
-    font-size:18px;
-    padding-top:10px;
-    background:#252525;
-    width:100%;
-  }
   .btn{
     float: right;
     padding:0;
     vertical-align: top;
     line-height: 12px;
-    margin-right:-5px;
+    margin-right:5px;
     color:#aaa;
     height:20px;
     width:20px;
@@ -530,7 +477,7 @@ aside {
     }
   }
   .text__large {
-    font-size: 32px !important;
+    font-size: 24px !important;
   }
   .text__small {
     font-size: 18px;
@@ -540,73 +487,65 @@ aside {
 
 .text__large{
   color:#888;
-  float: left;
   &.active{
     color:#000;
   }
 
   label{
     color:#888;
-    font-size:20px;
-    line-height: 24px;
+    font-size:16px;
   }
-}
-
-.color-swatch{
-  float:left;
-  margin-top:12px;
 }
 
 .text__small{
   color:#888;
-  float: left;
   &.active{
     color:#000;
   }
 
   label{
     color:#888;
-    line-height: 21px;
     font-size:16px;
   }
 } 
 
 .legend {
-  position: fixed;
-  height:500px;
-  width:600px;
   font-size: 14px;
   margin-bottom: 20px;
   background: white;
-  border: 1px solid #252525;
+  border: 1px solid #ccc;
+  display: inline-block;
   display: none;
   float: right;
   margin-right:15px;
   position: fixed;
-  top:0;
-  opacity: 0;
-  margin-top:-250px;
-  margin-left:-300px;
-  left:50%;
-  transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
-
+  bottom:0px;
+  right:80px;
   &.active{
-    display:block;
-    opacity: 1;
-    top:40%;
+    display: inline-block;
   }
-  h3{
-    float:left;
-  }
-  a{
-    float: right;
-    color:#ddd;
-  }
-  p{
-    font-size:16px;
-    padding:20px;
-  }
- 
+  &:after,
+&:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 100%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+&:after {
+    top: 35px;
+    border-color: transparent transparent transparent #fff;
+    border-width: 10px;
+}
+
+&:before {
+    top: 34px;
+    border-color: transparent transparent transparent #aaa;
+    border-width: 11px;
+}
   .legend-item {
     float: left;
     padding: 20px;
