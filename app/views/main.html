@@ -9,7 +9,7 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
   <div class="col-md-12 no-padding no-margin">
   <header>
     
-  <h2 style="float: left; padding: 0 20px;">Pairings & Accessibility <span ng-show="colors.length == 1"> - {{colors.length}} color </span><span ng-show="colors.length > 1"> - {{colors.length}} colors </span></h2>
+  <h2 style="float: left; padding: 0 20px;">Pairings & Accessibility ( {{colors.length}} colors )</h2>
   <div class="legend cf">
     <!-- <span>
       <span class="text__large">AA</span> - Large Text
@@ -64,7 +64,7 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
   <section class="palette">
      <input class="add__color__input" colorpicker colorpicker-is-open="isOpen" colorpicker-size="300" type="text" ng-model="newColor" placeholder="#ffffff" />
     <div class="palette__actions">
-      <button class="add__color" ng-click="addColor()" title="Add color"><i class="fa fa-plus" style="color:{{newColor}}" ></i></button>
+      <button class="add__color" ng-click="addColor()" title="Add color"><i class="fa fa-plus"></i></button>
     </div>
 
    <!--  <div class="palette__color" ng-repeat="(i, item) in colors track by i">
