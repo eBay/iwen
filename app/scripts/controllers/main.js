@@ -8,27 +8,13 @@
  * Controller of the iwenApp
  */
 angular.module('iwenApp')
-  .controller('MainCtrl', function($scope, $http, $timeout, $cookies) {
+  .controller('MainCtrl', function($scope, $http, $timeout) {
 
     $scope.colors = [];
     $scope.styles = [];
     $scope.bgStyles = [];
     $scope.nestedStyles = [];
     $scope.colorInfo = [];
-    $scope.sessionId;
-
-    
-
-    if($cookies.get('sessionId') == undefined){
-      $cookies.put('sessionId', Date.now() * getRandomInt(1, 10));  
-    }
-    else{
-      console.log($cookies.get('sessionId'))
-    }
-
-
-
-
 
 
     $scope.$watchCollection('newColor', function(nv) {
@@ -42,10 +28,6 @@ angular.module('iwenApp')
     $scope.colors = [      
       
     ];
-
-    function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
 
     if(!$scope.colors.length){
       $('body').addClass('no-colors');
