@@ -31,7 +31,6 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
       'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-ui-sortable/sortable.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/tinycolor/tinycolor.js',
       'bower_components/angular-color-picker/dist/angularjs-color-picker.js',
