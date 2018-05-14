@@ -163,7 +163,7 @@ angular.module('iwenApp')
 
           var element = angular.element('#color__'+$scope.colors[i]+i);
           var contrast = element.find(' .contrast');
-          console.log('length', $scope.colors[i].length);
+          console.log($scope.colors[i].length);
 
           var contrastValue;
           var colorPairing;
