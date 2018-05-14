@@ -21,26 +21,8 @@ angular.module('iwenApp')
       $scope.updateUI();
     });
     $scope.isOpen = true;
-
-
-
-    $scope.showLegend = function(){
-      
-      $('.legend').addClass('active');
-    }
-
-
-    $scope.hideLegend = function(){
-      $('.legend').removeClass('active');
-    }
     
 
-
-
-
-    $('.info').on('mouseleave', function(){
-      $('.legend').toggleClass('active');
-    })
 
 
     if($cookies.get('colors') == undefined){
@@ -52,7 +34,6 @@ angular.module('iwenApp')
       $scope.colors = JSON.parse($cookies.get('colors'));
 
     }
-
 
 
     $scope.sortableOptions = {
