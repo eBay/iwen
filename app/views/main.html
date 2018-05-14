@@ -140,24 +140,20 @@ http://africanhistory.about.com/od/egyptology/ss/EgyptColour.htm
     <h3>Color Box</h3>
     
     <div class="palette__color" ng-repeat="color in colors track by $index">
-      <span class="color-choice color-swatch" style="background: #{{util.cleanHash(color.hex)}}" ng-click="util.colorSelected(color.hex, $index)"></span>      
- 
-     
-    </div>
-
-    {{colors[util.currColorSelected].rgbl.toFixed(3)}}
-
-         <div class="color__input">
+      <span class="color-choice color-swatch" style="background: #{{util.cleanHash(color.hex)}}" ng-click="util.colorSelected(color.hex)"></span>
+      <div class="color__input">
         <div class="color__picker" ng-style=bgStyles[i]></div>
-        <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[util.currColorSelected].hex" />
+        <input colorpicker="hex" type="text" class="palette__values" ng-model="colors[$index].hex" />
       </div>
       <ul class="color__properties">
-        <li>Luminance: <span ng-bind="colors[util.currColorSelected].rgbl.toFixed(3)"></span>
-        <button class="fa fa-minus-square" ng-click="util.decreaseLum(util.currColorSelected)"></button>
-          <button class="fa fa-plus-square" ng-click="util.increaseLum(util.currColorSelected)"></button>
+        <li>Luminance: <span ng-bind="color.rgbl.toFixed(3)"></span>
+        <button class="fa fa-minus-square" ng-click="util.decreaseLum($index)"></button>
+          <button class="fa fa-plus-square" ng-click="util.increaseLum($index)"></button>
         </li>
-        <li>rgb(<span ng-bind="colors[util.currColorSelected].rgbl.r"></span>, <span ng-bind="colors[util.currColorSelected].rgbl.g"></span>, <span ng-bind="colors[util.currColorSelected].rgbl.b"></span>)</li>
+        <li>rgb(<span ng-bind="color.rgbl.r"></span>, <span ng-bind="color.rgbl.g"></span>, <span ng-bind="color.rgbl.b"></span>)</li>
       </ul>
+     
+    </div>
 
     </div>
     <div class="choose-font">

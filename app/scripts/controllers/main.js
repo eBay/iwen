@@ -40,15 +40,14 @@ angular.module('iwenApp')
       updateUI : updateUI(),      
       activateSidebarInfo : 1,
       cardClicked : 0,
-      currColorSelected : 0,
       deleteColor : function(key){
           return getDeleteColor(key)
       },
       addColor : function(){
           return getAddColor();
       },
-      colorSelected : function(color, index){
-          return getColorSelected(color, index);
+      colorSelected : function(color){
+          return getColorSelected(color);
       },
       fontSelected : function(font){
           return getFontSelected(font);
@@ -65,7 +64,6 @@ angular.module('iwenApp')
         }
       },
       decreaseLum : function(key) {
-        console.log(key)
         var thisColor = hexToRgb($scope.colors[key].hex);
         $scope.colors[key].rgbl.r = thisColor.r
         $scope.colors[key].rgbl.g = thisColor.g
@@ -217,14 +215,12 @@ angular.module('iwenApp')
 
 
 
-    function getColorSelected(color, index){     
+    function getColorSelected(color){            
       console.log( $scope.colors[$scope.util.cardClicked]);
-      $scope.util.currColorSelected = index;
       if(!$scope.colors[$scope.util.cardClicked]){
         $scope.colors[$scope.util.cardClicked] = 0;
       }
       var cur_selection = $scope.colors[$scope.util.cardClicked][$scope.util.currHeader];
-          console.log('this is cur select', cur_selection);
           console.log($scope.colors[$scope.util.cardClicked][$scope.util.currHeader])
           cur_selection.hex  = color; 
           cur_selection.rgbl  = hexToRgb(cur_selection.hex); 
